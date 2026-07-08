@@ -4,7 +4,7 @@ Tags: ai, transparency, media-library, images, eu-ai-act
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.2.2
+Stable tag: 0.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,6 +79,9 @@ Plugin settings are removed on uninstall. Per-image labels stored in attachment 
 2. Setting the AI label and alteration details on an attachment in the Media Library.
 
 == Changelog ==
+
+= 0.2.3 =
+* New: redesigned upgrade page — real yearly prices instead of per-month framing, prices in EUR by default (USD still selectable), and the plugin icon on all Freemius screens.
 
 = 0.2.2 =
 * Changed: the bundled Freemius SDK moved from includes/freemius to vendor/freemius, the wordpress.org convention for third-party libraries.

@@ -4,7 +4,7 @@
  * Plugin Name:       EU AI Label
  * Plugin URI:        https://euailabel.app/
  * Description:       Adds visible, localized AI labels to images in the Media Library, in the spirit of EU AI Act Article 50 transparency obligations.
- * Version:           0.2.2
+ * Version:           0.2.3
  * Requires at least: 6.5
  * Requires PHP:      8.1
  * Author:            EU AI Label
@@ -16,7 +16,7 @@
  * @package EU_AI_Label
  */
 defined( 'ABSPATH' ) || exit;
-define( 'EU_AI_LABEL_VERSION', '0.2.2' );
+define( 'EU_AI_LABEL_VERSION', '0.2.3' );
 define( 'EU_AI_LABEL_FILE', __FILE__ );
 define( 'EU_AI_LABEL_DIR', plugin_dir_path( __FILE__ ) );
 define( 'EU_AI_LABEL_URL', plugin_dir_url( __FILE__ ) );
@@ -66,6 +66,10 @@ if ( !function_exists( 'eu_ai_label_fs' ) && !defined( 'WP_TESTS_DOMAIN' ) && fi
 
     eu_ai_label_fs();
     do_action( 'eu_ai_label_fs_loaded' );
+    // SDK screen customizations (pricing skin, EUR default, brand icon).
+    // Required right here, not on a later hook: the pricing template applies
+    // its filters at render time and would miss late registrations.
+    require_once EU_AI_LABEL_DIR . 'includes/freemius-customizations.php';
     /**
      * Remove plugin options when the plugin is uninstalled.
      *

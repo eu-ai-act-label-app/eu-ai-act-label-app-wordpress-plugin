@@ -1,0 +1,192 @@
+/**
+ * Brand skin for the Freemius in-dashboard pricing page.
+ *
+ * Loaded by the SDK via the `pricing/css_path` filter (see
+ * includes/freemius-customizations.php). The bundled pricing app themes
+ * itself through CSS custom properties declared at :root; redefining the
+ * `--fs-ds-theme-*` tokens on the app containers (higher specificity)
+ * recolors every component consistently. Component polish below mirrors the
+ * app's own selectors with a doubled-id prefix so it outranks them without
+ * `!important` — the app injects its styles at runtime, after this sheet.
+ *
+ * Constraint: never change display/position/explicit widths of .fs-package
+ * or .fs-packages — the plan slider measures rendered boxes.
+ *
+ * Palette: navy #0e2a6b / #16368a, accent #1d4ed8 (hover #1e40af),
+ * gold #f0b90b (accents only), border #e3e8f1, shade #f6f8fc,
+ * ink #131b2c, muted #667082.
+ */
+
+/* ------------------------------------------------------------------ *
+ * Design tokens
+ * ------------------------------------------------------------------ */
+
+#fs_pricing_app,
+#fs_pricing_wrapper {
+	--fs-ds-theme-primary-accent-color: #1d4ed8;
+	--fs-ds-theme-primary-accent-color-hover: #1e40af;
+
+	--fs-ds-theme-background-color: #ffffff;
+	--fs-ds-theme-background-shade: #f6f8fc;
+	--fs-ds-theme-background-accented: #eef2fb;
+	--fs-ds-theme-background-hover: #e7edf9;
+	--fs-ds-theme-background-dark: #16368a;
+	--fs-ds-theme-background-darkest: #0e2a6b;
+	--fs-ds-theme-background-overlay: rgba(14, 42, 107, 0.55);
+
+	--fs-ds-theme-text-color: #131b2c;
+	--fs-ds-theme-heading-text-color: #0e2a6b;
+	--fs-ds-theme-muted-text-color: #667082;
+	--fs-ds-theme-border-color: #e3e8f1;
+	--fs-ds-theme-divider-color: #e3e8f1;
+
+	--fs-ds-theme-button-primary-background-color: #1d4ed8;
+	--fs-ds-theme-button-primary-background-hover-color: #1e40af;
+	--fs-ds-theme-button-primary-border-color: #1e40af;
+	--fs-ds-theme-button-primary-border-hover-color: #16368a;
+	--fs-ds-theme-button-primary-border-focus-color: #a7c0f2;
+	--fs-ds-theme-button-primary-text-color: #ffffff;
+	--fs-ds-theme-button-border-focus-color: #1d4ed8;
+
+	--fs-ds-theme-package-popular-background: #0e2a6b;
+	--fs-ds-theme-testimonial-star-color: #f0b90b;
+}
+
+/* ------------------------------------------------------------------ *
+ * Billing-cycle toggle: segmented pill
+ * ------------------------------------------------------------------ */
+
+#fs_pricing_wrapper #fs_pricing_app .fs-section--billing-cycles .fs-billing-cycles {
+	background: #f6f8fc;
+	border: 1px solid #e3e8f1;
+	border-radius: 999px;
+	padding: 3px;
+}
+
+#fs_pricing_wrapper #fs_pricing_app .fs-section--billing-cycles .fs-billing-cycles li {
+	border-color: transparent;
+	border-radius: 999px;
+	color: #667082;
+	font-weight: 600;
+	transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+#fs_pricing_wrapper #fs_pricing_app .fs-section--billing-cycles .fs-billing-cycles li.fs-selected-billing-cycle {
+	background: #0e2a6b;
+	color: #ffffff;
+}
+
+/* ------------------------------------------------------------------ *
+ * Plan cards
+ * ------------------------------------------------------------------ */
+
+/* Featured plan: gold bottom hairline (the card's 3px bottom border). */
+#fs_pricing_wrapper #fs_pricing_app .fs-package.fs-featured-plan {
+	border-bottom-color: #f0b90b;
+}
+
+/* "Most popular" band: gold letterspaced caps on the navy token band. */
+#fs_pricing_wrapper #fs_pricing_app .fs-package.fs-featured-plan .fs-most-popular {
+	box-shadow: inset 0 -2px 0 0 #f0b90b;
+	color: #f0b90b;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+}
+
+#fs_pricing_wrapper #fs_pricing_app .fs-package .fs-plan-title {
+	color: #0e2a6b;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+}
+
+/* Blurbs read as sentences, not shouting. */
+#fs_pricing_wrapper #fs_pricing_app .fs-package .fs-plan-description {
+	color: #667082;
+	letter-spacing: normal;
+	text-transform: none;
+}
+
+/* ------------------------------------------------------------------ *
+ * Price figures
+ * ------------------------------------------------------------------ */
+
+#fs_pricing_wrapper #fs_pricing_app .fs-package .fs-selected-pricing-amount {
+	color: #131b2c;
+	font-variant-numeric: tabular-nums;
+}
+
+#fs_pricing_wrapper #fs_pricing_app .fs-package .fs-selected-pricing-amount .fs-selected-pricing-amount-integer {
+	font-weight: 700;
+}
+
+#fs_pricing_wrapper #fs_pricing_app .fs-package .fs-selected-pricing-amount-fraction,
+#fs_pricing_wrapper #fs_pricing_app .fs-package .fs-selected-pricing-amount-cycle {
+	color: #667082;
+	font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ *
+ * License-quantity rows
+ * ------------------------------------------------------------------ */
+
+/* Selected row: tinted, with an inset accent bar. */
+#fs_pricing_wrapper #fs_pricing_app .fs-license-quantities .fs-license-quantity-container.fs-license-quantity-selected {
+	background: #eef2fb;
+	box-shadow: inset 3px 0 0 0 #1d4ed8;
+	color: #0e2a6b;
+	font-weight: 600;
+}
+
+/* Inverted variant inside the featured plan: gold bar on navy. */
+#fs_pricing_wrapper #fs_pricing_app .fs-package.fs-featured-plan .fs-license-quantities .fs-license-quantity-container.fs-license-quantity-selected {
+	background: #0e2a6b;
+	box-shadow: inset 3px 0 0 0 #f0b90b;
+	color: #ffffff;
+}
+
+/* ------------------------------------------------------------------ *
+ * Buttons, tooltips, modals
+ * ------------------------------------------------------------------ */
+
+#fs_pricing_wrapper #fs_pricing_app .fs-package .fs-upgrade-button-container .fs-upgrade-button {
+	border-radius: 8px;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	text-transform: none;
+	transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+#fs_pricing_wrapper #fs_pricing_app .fs-tooltip .fs-tooltip-message {
+	border-radius: 8px;
+	box-shadow: 0 4px 14px rgba(14, 42, 107, 0.25);
+	line-height: 1.5;
+	padding: 10px 12px;
+}
+
+#fs_pricing_wrapper #fs_pricing_app .fs-modal .fs-modal-content-container {
+	border-radius: 12px;
+	box-shadow: 0 12px 40px rgba(14, 42, 107, 0.3);
+	overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ *
+ * Accessibility
+ * ------------------------------------------------------------------ */
+
+#fs_pricing_wrapper #fs_pricing_app a:focus-visible,
+#fs_pricing_wrapper #fs_pricing_app button:focus-visible,
+#fs_pricing_wrapper #fs_pricing_app .fs-button:focus-visible,
+#fs_pricing_wrapper #fs_pricing_app .fs-billing-cycles li:focus-visible {
+	outline: 2px solid #1d4ed8;
+	outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#fs_pricing_wrapper *,
+	#fs_pricing_app * {
+		animation-duration: 0.01ms;
+		animation-iteration-count: 1;
+		transition-duration: 0.01ms;
+	}
+}
