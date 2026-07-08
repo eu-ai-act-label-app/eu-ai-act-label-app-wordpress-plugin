@@ -1,0 +1,91 @@
+/**
+ * EU AI Label badge styles.
+ *
+ * Fixed, accessibility-first styling (no user customization):
+ *  - Always visible on first exposure — no hover/focus/click reveal.
+ *  - Opaque background so text contrast is guaranteed over ANY photo
+ *    (#ffffff on #1d1d1b ≈ 16.8:1, well above WCAG 1.4.3 AA 4.5:1).
+ *  - A light hairline border + drop shadow give the badge edge contrast
+ *    against both light and dark images (WCAG 1.4.11 non-text contrast).
+ *  - Font size fixed at 13px (≥ the 12px mobile-readability floor).
+ *  - Pill shape, #1d1d1b fill, and uppercase label mirror the EU
+ *    standardized AI labels; unlike the flat EU SVGs the opaque fill keeps
+ *    it legible on any image, and the text stays localized via .mo.
+ *  - Positioned bottom-left to stay clear of top-corner sale badges and
+ *    mid-edge / bottom-center carousel controls.
+ */
+
+.eu-ai-label-wrap {
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+	margin: 0;
+	line-height: 0;
+}
+
+.eu-ai-label-wrap img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+.eu-ai-label-badge {
+	position: absolute;
+	z-index: 2;
+	display: inline-flex;
+	align-items: center;
+	box-sizing: border-box;
+	max-width: calc(100% - 16px);
+	padding: 4px 11px;
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	/* Fully-rounded pill to match the EU standardized labels. */
+	border-radius: 999px;
+	background: #1d1d1b;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+	color: #ffffff;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.25;
+	/* Uppercase mirrors the EU label wordmark; display-only, so the
+	   underlying aria-label / .mo text stays sentence case for screen
+	   readers and non-Latin scripts are unaffected. */
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	text-decoration: none;
+	/* Allow wrapping so the disclosure text is never clipped or truncated. */
+	white-space: normal;
+	/* Always visible: no hover/focus reveal, no fade. */
+	visibility: visible;
+	opacity: 1;
+	/* Purely informational overlay — never intercept clicks on the image. */
+	pointer-events: none;
+}
+
+/* Position: bottom-left keeps clear of sale badges and carousel controls. */
+.eu-ai-label-pos--bottom-left .eu-ai-label-badge {
+	bottom: 8px;
+	left: 8px;
+}
+
+.eu-ai-label-pos--bottom-right .eu-ai-label-badge {
+	right: 8px;
+	bottom: 8px;
+}
+
+.eu-ai-label-pos--top-left .eu-ai-label-badge {
+	top: 8px;
+	left: 8px;
+}
+
+.eu-ai-label-pos--top-right .eu-ai-label-badge {
+	top: 8px;
+	right: 8px;
+}
+
+/* Respect users who prefer higher contrast: drop the translucent border. */
+@media (prefers-contrast: more) {
+	.eu-ai-label-badge {
+		border-color: #ffffff;
+	}
+}

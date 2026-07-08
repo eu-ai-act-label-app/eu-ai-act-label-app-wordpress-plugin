@@ -1,0 +1,175 @@
+/**
+ * EU AI Label admin styles.
+ *
+ * Status chips (Media Library column, audit log) echo the front-end badge
+ * pill so editors recognize the same mark everywhere; the settings page gets
+ * a light card layout using core admin palette colors only.
+ */
+
+/* ----- Status chips ----- */
+
+.eu-ai-label-chip {
+	display: inline-flex;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 2px 9px;
+	border: 1px solid transparent;
+	border-radius: 999px;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 1.4;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	white-space: nowrap;
+}
+
+/* Badge-bearing states mirror the front-end pill. */
+.eu-ai-label-chip--ai_generated,
+.eu-ai-label-chip--ai_edited {
+	background: #1d1d1b;
+	border-color: #1d1d1b;
+	color: #ffffff;
+}
+
+/* Declared "No AI": outlined, quiet. */
+.eu-ai-label-chip--no_ai {
+	background: transparent;
+	border-color: #8c8f94;
+	color: #50575e;
+}
+
+/* Not labeled at all (audit "No label"): dashed outline, quieter still. */
+.eu-ai-label-chip--none {
+	background: transparent;
+	border-style: dashed;
+	border-color: #c3c4c7;
+	color: #787c82;
+}
+
+/* Muted em-dash placeholder in the Media Library column. */
+.eu-ai-label-column-empty {
+	color: #a7aaad;
+}
+
+.column-eu_ai_label {
+	width: 10em;
+}
+
+/* Old → new chip pair in the audit log. */
+.eu-ai-label-change {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+/* ----- Settings page cards ----- */
+
+.eu-ai-label-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 16px;
+	max-width: 960px;
+	margin-top: 16px;
+}
+
+.eu-ai-label-card {
+	box-sizing: border-box;
+	padding: 20px;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	background: #ffffff;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.eu-ai-label-card h2 {
+	margin: 0 0 12px;
+	padding: 0;
+	font-size: 14px;
+}
+
+.eu-ai-label-card > p:last-child {
+	margin-bottom: 0;
+}
+
+.eu-ai-label-card ol {
+	margin: 0 0 0 18px;
+}
+
+.eu-ai-label-card ol li {
+	margin-bottom: 6px;
+}
+
+/* Badge preview: the real front-end pill over a light and a dark sample. */
+.eu-ai-label-preview {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.eu-ai-label-preview-tile {
+	position: relative;
+	flex: 1 1 0;
+	min-width: 0;
+	height: 96px;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.eu-ai-label-preview-tile--light {
+	background: linear-gradient(145deg, #f2ede6 0%, #ddd3c4 55%, #bfb2a0 100%);
+}
+
+.eu-ai-label-preview-tile--dark {
+	background: linear-gradient(145deg, #4a4441 0%, #2e2b31 55%, #1a1c25 100%);
+}
+
+/* Verbatim front-end badge look (badge.css), scoped to the preview tiles. */
+.eu-ai-label-preview-badge {
+	position: absolute;
+	bottom: 8px;
+	left: 8px;
+	display: inline-flex;
+	align-items: center;
+	box-sizing: border-box;
+	max-width: calc(100% - 16px);
+	padding: 4px 11px;
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	border-radius: 999px;
+	background: #1d1d1b;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+	color: #ffffff;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.25;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	white-space: nowrap;
+}
+
+/* Pro adaptive variant: light chip as rendered on dark images. */
+.eu-ai-label-preview-badge--light {
+	border-color: rgba(0, 0, 0, 0.25);
+	background: #ffffff;
+	color: #1d1d1b;
+}
+
+/* Labeled-image counts. */
+.eu-ai-label-counts {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin: 0 0 16px;
+}
+
+.eu-ai-label-counts > div {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.eu-ai-label-counts .eu-ai-label-count {
+	font-size: 18px;
+	font-weight: 600;
+	color: #1d2327;
+}

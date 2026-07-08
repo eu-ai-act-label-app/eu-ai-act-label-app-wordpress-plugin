@@ -1,0 +1,114 @@
+# EU AI Label translations.
+# Copyright (C) 2026 EU AI Label
+# This file is distributed under the GPL-2.0-or-later license.
+msgid ""
+msgstr ""
+"Project-Id-Version: EU AI Label 0.1.0\n"
+"Report-Msgid-Bugs-To: https://euailabel.app/\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: eu-ai-label\n"
+
+
+msgid "EU AI Label"
+msgstr "EU AI Label"
+
+msgid "AI generated"
+msgstr "Generato dall’IA"
+
+msgid "AI modified"
+msgstr "Modificato dall’IA"
+
+msgid "— No label —"
+msgstr "— Nessuna etichetta —"
+
+msgid "No AI"
+msgstr "Senza IA"
+
+msgid "AI label"
+msgstr "Etichetta IA"
+
+msgid "Declare whether this image was generated or edited by AI (EU AI Act Art. 50)."
+msgstr "Dichiara se questa immagine è stata generata o modificata dall’IA (Regolamento UE sull’IA, art. 50)."
+
+msgid "Badge appearance"
+msgstr "Aspetto dell’etichetta"
+
+msgid "Customize how the AI label badge looks. The badge text itself is localized automatically and cannot be changed here."
+msgstr "Personalizza l’aspetto dell’etichetta IA. Il testo dell’etichetta è tradotto automaticamente e non può essere modificato qui."
+
+msgid "Position"
+msgstr "Posizione"
+
+msgid "Size"
+msgstr "Dimensione"
+
+msgid "Background color"
+msgstr "Colore di sfondo"
+
+msgid "Text color"
+msgstr "Colore del testo"
+
+msgid "Show icon"
+msgstr "Mostra icona"
+
+msgid "Top left"
+msgstr "In alto a sinistra"
+
+msgid "Top right"
+msgstr "In alto a destra"
+
+msgid "Bottom left"
+msgstr "In basso a sinistra"
+
+msgid "Bottom right"
+msgstr "In basso a destra"
+
+msgid "Small"
+msgstr "Piccola"
+
+msgid "Medium"
+msgstr "Media"
+
+msgid "Large"
+msgstr "Grande"
+
+msgid "Display an icon next to the label text"
+msgstr "Mostra un’icona accanto al testo dell’etichetta"
+
+msgid "Background removed"
+msgstr "Sfondo rimosso"
+
+msgid "Color modified"
+msgstr "Colori modificati"
+
+msgid "Lighting adjusted"
+msgstr "Illuminazione regolata"
+
+msgid "Objects added or removed"
+msgstr "Oggetti aggiunti o rimossi"
+
+msgid "Retouched (skin or blemishes)"
+msgstr "Ritoccato (pelle o imperfezioni)"
+
+msgid "Resolution enhanced (upscaled)"
+msgstr "Risoluzione migliorata (upscaling)"
+
+msgid "AI alterations"
+msgstr "Modifiche IA"
+
+msgid "Optional: what was changed with AI. Shown in a tooltip on the front-end badge."
+msgstr "Facoltativo: cosa è stato modificato con l'IA. Mostrato in un tooltip sul badge del sito."
+
+msgid "This image was generated with AI."
+msgstr "Questa immagine è stata generata con l'IA."
+
+msgid "This image was altered with AI."
+msgstr "Questa immagine è stata modificata con l'IA."
+
+#. translators: %s: comma-separated list of AI alterations.
+msgid "Changes made: %s."
+msgstr "Modifiche apportate: %s."
