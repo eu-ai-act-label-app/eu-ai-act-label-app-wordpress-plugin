@@ -1,10 +1,10 @@
 === EU AI Label ===
-Contributors: lukjaki, freemius
+Contributors: lukjak, freemius
 Tags: ai, transparency, media-library, images, eu-ai-act
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.2.3
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ Built for EU WooCommerce stores that want a simple, honest way to disclose AI-ge
 
 **Features**
 
-* Per-image labeling directly in the Media Library (up to 10 labeled images on the free plan).
+* Per-image labeling directly in the Media Library, for unlimited images.
 * Three-state taxonomy: AI generated, AI modified, or No AI (no badge).
 * Server-side rendering — no front-end JavaScript required. Both featured/gallery images (via `wp_get_attachment_image`) and in-content images (Image blocks, galleries, and classic-editor images) are covered.
 * An accessibility-first badge: always visible (no hover needed), high-contrast on any photo, `role="img"` with a screen-reader label, and a readable minimum size. The wording and pill shape mirror the EU standardized AI labels.
@@ -28,17 +28,18 @@ Labeling is manual and per-image by design: you stay in control of exactly what 
 
 This plugin is part of the euailabel.app AI Act toolkit for e-commerce.
 
+EU AI Label is an independent tool that helps with transparency disclosures in the spirit of the EU AI Act (Regulation (EU) 2024/1689). It is not affiliated with, endorsed by, or an official labeling scheme of the European Union or any EU institution.
+
 **EU AI Label Pro**
 
 A Pro upgrade adds, for stores that need more:
 
-* Unlimited labeled images (the free plan covers up to 10).
 * An adaptive badge that auto-adjusts to light or dark images.
 * Bulk labeling from the Media Library (list and grid views).
 * Optional "how it was altered" details shown in a badge tooltip (e.g. background removed, color modified).
 * A tamper-evident audit log of every label change (who, what, when), sealed with a hash chain.
 
-The free plugin is a complete disclosure tool for up to 10 images; Pro removes the cap and adds the refinements above.
+The free plugin is a complete, unrestricted disclosure tool; Pro adds the refinements above. All Pro functionality lives in a separately distributed build — nothing in the free plugin is locked or limited.
 
 == Installation ==
 
@@ -53,9 +54,9 @@ The free plugin is a complete disclosure tool for up to 10 images; Pro removes t
 
 No. Labeling is manual and per-image, by design. You decide what is disclosed.
 
-= How many images can I label for free? =
+= Is the free version limited? =
 
-The free plan labels up to 10 images — enough to disclose AI imagery on a small site and to evaluate the plugin. Pro removes the limit. Labels you have already applied always keep working and stay editable, even if you later drop from Pro back to free.
+No. The free plugin is fully functional: you can label as many images as you like, and every feature it ships is available to everyone. Pro is a separate build that adds extras (adaptive badge, bulk labeling, alteration tooltips, an audit log). Labels always keep working and stay editable, even if you drop from Pro back to free.
 
 = Can I change the badge text or its appearance? =
 
@@ -79,6 +80,9 @@ Plugin settings are removed on uninstall. Per-image labels stored in attachment 
 2. Setting the AI label and alteration details on an attachment in the Media Library.
 
 == Changelog ==
+
+= 0.3.0 =
+* Changed: removed the free-plan 10-image limit — the free plugin now labels unlimited images and is fully functional, per WordPress.org guidelines.
 
 = 0.2.3 =
 * New: redesigned upgrade page — real yearly prices instead of per-month framing, prices in EUR by default (USD still selectable), and the plugin icon on all Freemius screens.

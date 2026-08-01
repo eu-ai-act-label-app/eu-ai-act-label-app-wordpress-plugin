@@ -21,18 +21,6 @@ defined( 'ABSPATH' ) || exit;
 final class EU_AI_Label_License {
 
 	/**
-	 * Maximum number of labeled images on the free plan (Pro is unlimited).
-	 *
-	 * Any stored label consumes a slot, including "No AI": the cap is on the
-	 * declaration, not on whether a badge renders. Existing labels always keep
-	 * working (and stay editable) — the cap only blocks labeling NEW images,
-	 * so a Pro downgrade never silently removes disclosures.
-	 *
-	 * @var int
-	 */
-	const FREE_LABEL_LIMIT = 10;
-
-	/**
 	 * Whether the current site is entitled to Pro features.
 	 *
 	 * @return bool

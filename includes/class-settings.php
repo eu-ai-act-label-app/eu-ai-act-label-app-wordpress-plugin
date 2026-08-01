@@ -263,18 +263,6 @@ class EU_AI_Label_Settings {
 							<span class="eu-ai-label-count"><?php echo esc_html( number_format_i18n( $counts[ EU_AI_Label_Plugin::STATUS_NO_AI ] ) ); ?></span>
 						</div>
 					</div>
-					<?php if ( ! $is_pro ) : ?>
-						<p class="description">
-							<?php
-							printf(
-								/* translators: 1: number of labeled images, 2: free-plan limit. */
-								esc_html__( '%1$s of %2$s free image labels used. Pro removes the limit.', 'eu-ai-label' ),
-								esc_html( number_format_i18n( array_sum( $counts ) ) ),
-								esc_html( number_format_i18n( EU_AI_Label_License::FREE_LABEL_LIMIT ) )
-							);
-							?>
-						</p>
-					<?php endif; ?>
 					<p>
 						<a class="button button-primary" href="<?php echo esc_url( admin_url( 'upload.php' ) ); ?>">
 							<?php echo esc_html__( 'Go to the Media Library', 'eu-ai-label' ); ?>
@@ -295,13 +283,7 @@ class EU_AI_Label_Settings {
 					<h2><?php echo esc_html__( 'Plan', 'eu-ai-label' ); ?></h2>
 					<p><strong><?php echo esc_html( $is_pro ? __( 'Pro — adaptive auto-contrast badge active', 'eu-ai-label' ) : __( 'Free', 'eu-ai-label' ) ); ?></strong></p>
 					<p class="description">
-						<?php
-						printf(
-							/* translators: %d: number of images the free plan can label. */
-							esc_html__( 'The free plan labels up to %d images with the always-visible, WCAG AA badge. Pro removes the limit and adds an adaptive badge, bulk labeling, alteration details with a badge tooltip, and a tamper-evident audit log.', 'eu-ai-label' ),
-							(int) EU_AI_Label_License::FREE_LABEL_LIMIT
-						);
-						?>
+						<?php echo esc_html__( 'The free plugin labels unlimited images with the always-visible, WCAG AA badge. Pro adds an adaptive badge, bulk labeling, alteration details with a badge tooltip, and a tamper-evident audit log.', 'eu-ai-label' ); ?>
 					</p>
 				</div>
 			</div>

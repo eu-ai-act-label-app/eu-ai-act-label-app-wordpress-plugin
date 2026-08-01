@@ -22,11 +22,12 @@ class EU_AI_Label_I18n {
 	}
 
 	/**
-	 * Load the `.mo` file for the current locale.
+	 * Register the bundled language directory with WordPress.
 	 *
 	 * @return void
 	 */
 	public function load_textdomain() {
+		// phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- Required for bundled translations outside WordPress.org language packs.
 		load_plugin_textdomain(
 			'eu-ai-label',
 			false,

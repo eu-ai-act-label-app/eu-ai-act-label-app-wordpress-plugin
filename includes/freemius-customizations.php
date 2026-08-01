@@ -62,45 +62,49 @@ function eu_ai_label_fs_plugin_icon() {
 eu_ai_label_fs()->add_filter( 'plugin_icon', 'eu_ai_label_fs_plugin_icon' );
 
 /**
- * Print the "limited for early adopters" badge on the Lifetime billing
- * toggle. Self-expiring: nothing renders from 2026-08-01 (site timezone).
+ * Enqueue the "limited for early adopters" badge styles on the Lifetime
+ * billing toggle. Self-expiring: nothing loads from 2026-08-01 (site timezone).
  *
  * This is a marketing overlay only — actually retiring or repricing the
  * lifetime option on that date happens in the Freemius Developer Dashboard.
  * Genuinely remove it there; EU consumer rules bar fake limited offers.
  *
- * Printed as a page-specific style block (not part of pricing.css) because
- * the badge is temporary and needs the PHP date gate. The hook suffix is
- * the SDK's pricing submenu under Settings: `{slug}-pricing`.
+ * Added as page-specific inline CSS (not part of pricing.css) because the
+ * badge is temporary and needs the PHP date gate. The hook suffix is the
+ * SDK's pricing submenu under Settings: `{slug}-pricing`.
  *
+ * @param string $hook_suffix Current admin page hook suffix.
  * @return void
  */
-function eu_ai_label_fs_lifetime_promo_styles() {
-	if ( current_datetime()->format( 'Y-m-d' ) >= '2026-08-01' ) {
+function eu_ai_label_fs_lifetime_promo_styles( $hook_suffix ) {
+	if (
+		'settings_page_eu-ai-label-pricing' !== $hook_suffix
+		|| current_datetime()->format( 'Y-m-d' ) >= '2026-08-01'
+	) {
 		return;
 	}
 
-	?>
-	<style id="eu-ai-label-lifetime-promo">
-		#fs_pricing_wrapper #fs_pricing_app .fs-billing-cycles li.fs-period--lifetime::after {
-			content: "Early adopters \00b7 ends Aug 1";
-			background: #f0b90b;
-			border-radius: 999px;
-			color: #131b2c;
-			display: inline-block;
-			font-size: 10px;
-			font-weight: 700;
-			letter-spacing: 0.04em;
-			line-height: 1.6;
-			margin-left: 8px;
-			padding: 2px 8px;
-			text-transform: uppercase;
-			vertical-align: middle;
-		}
-	</style>
-	<?php
+	$css = '#fs_pricing_wrapper #fs_pricing_app .fs-billing-cycles li.fs-period--lifetime::after {
+		content: "Early adopters \\00b7 ends Aug 1";
+		background: #f0b90b;
+		border-radius: 999px;
+		color: #131b2c;
+		display: inline-block;
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		line-height: 1.6;
+		margin-left: 8px;
+		padding: 2px 8px;
+		text-transform: uppercase;
+		vertical-align: middle;
+	}';
+
+	wp_register_style( 'eu-ai-label-lifetime-promo', false, array(), EU_AI_LABEL_VERSION );
+	wp_enqueue_style( 'eu-ai-label-lifetime-promo' );
+	wp_add_inline_style( 'eu-ai-label-lifetime-promo', $css );
 }
-add_action( 'admin_print_styles-settings_page_eu-ai-label-pricing', 'eu_ai_label_fs_lifetime_promo_styles' );
+add_action( 'admin_enqueue_scripts', 'eu_ai_label_fs_lifetime_promo_styles' );
 
 /*
  * Checkout social proof — enable once the product has enough reviews and

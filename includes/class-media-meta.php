@@ -38,63 +38,6 @@ class EU_AI_Label_Media_Meta {
 		add_action( 'init', array( $this, 'register_meta' ) );
 		add_filter( 'manage_media_columns', array( $this, 'add_column' ) );
 		add_action( 'manage_media_custom_column', array( $this, 'render_column' ), 10, 2 );
-
-		// Free-plan cap, enforced at the meta layer so every write path is
-		// covered (editor, REST, WP-CLI). Deletes are never blocked.
-		add_filter( 'add_post_metadata', array( $this, 'enforce_label_cap' ), 10, 4 );
-		add_filter( 'update_post_metadata', array( $this, 'enforce_label_cap' ), 10, 4 );
-	}
-
-	/**
-	 * Total number of labeled attachments (any status).
-	 *
-	 * @return int
-	 */
-	public static function labeled_count() {
-		return array_sum( EU_AI_Label_Settings::get_status_counts() );
-	}
-
-	/**
-	 * Whether an attachment may (still) be labeled under the current plan.
-	 *
-	 * Pro is unlimited. On free, already-labeled attachments stay editable
-	 * (changing or clearing a label never increases the count); unlabeled
-	 * attachments require a free slot under FREE_LABEL_LIMIT.
-	 *
-	 * @param int $attachment_id Attachment ID.
-	 * @return bool
-	 */
-	public static function can_label( $attachment_id ) {
-		if ( EU_AI_Label_License::is_pro() ) {
-			return true;
-		}
-
-		if ( metadata_exists( 'post', (int) $attachment_id, EU_AI_Label_Plugin::META_KEY ) ) {
-			return true;
-		}
-
-		return self::labeled_count() < EU_AI_Label_License::FREE_LABEL_LIMIT;
-	}
-
-	/**
-	 * Meta-layer guard: block label writes beyond the free-plan cap.
-	 *
-	 * @param null|bool $check      Short-circuit flag from earlier filters.
-	 * @param int       $object_id  Post ID.
-	 * @param string    $meta_key   Meta key being written.
-	 * @param mixed     $meta_value New value (unused).
-	 * @return null|bool False to block the write, $check untouched otherwise.
-	 */
-	public function enforce_label_cap( $check, $object_id, $meta_key, $meta_value ) {
-		if ( null !== $check ) {
-			return $check;
-		}
-
-		if ( EU_AI_Label_Plugin::META_KEY !== $meta_key || 'attachment' !== get_post_type( (int) $object_id ) ) {
-			return $check;
-		}
-
-		return self::can_label( (int) $object_id ) ? $check : false;
 	}
 
 	/**
@@ -223,13 +166,10 @@ class EU_AI_Label_Media_Meta {
 			$current = '';
 		}
 
-		$capped = ! self::can_label( (int) $post->ID );
-
 		$html = sprintf(
-			'<select name="attachments[%1$d][%2$s]" id="attachments-%1$d-%2$s"%3$s>',
+			'<select name="attachments[%1$d][%2$s]" id="attachments-%1$d-%2$s">',
 			(int) $post->ID,
-			esc_attr( self::FIELD ),
-			$capped ? ' disabled="disabled"' : ''
+			esc_attr( self::FIELD )
 		);
 		foreach ( self::status_choices() as $value => $label ) {
 			$html .= sprintf(
@@ -242,21 +182,6 @@ class EU_AI_Label_Media_Meta {
 		$html .= '</select>';
 
 		$helps = __( 'Declare whether this image was generated or edited by AI (EU AI Act Art. 50).', 'eu-ai-label' );
-
-		if ( $capped ) {
-			$helps = sprintf(
-				/* translators: %d: number of images the free plan can label. */
-				__( 'Free plan limit reached: %d images are already labeled. Upgrade to Pro for unlimited labels.', 'eu-ai-label' ),
-				EU_AI_Label_License::FREE_LABEL_LIMIT
-			);
-		} elseif ( EU_AI_Label_License::is_free() ) {
-			$helps .= ' ' . sprintf(
-				/* translators: 1: number of labeled images, 2: free-plan limit. */
-				__( '%1$d of %2$d free image labels used.', 'eu-ai-label' ),
-				self::labeled_count(),
-				EU_AI_Label_License::FREE_LABEL_LIMIT
-			);
-		}
 
 		$form_fields[ self::FIELD ] = array(
 			'label' => __( 'AI label', 'eu-ai-label' ),
@@ -288,9 +213,7 @@ class EU_AI_Label_Media_Meta {
 
 		if ( '' === $status ) {
 			delete_post_meta( (int) $post['ID'], EU_AI_Label_Plugin::META_KEY );
-		} elseif ( self::can_label( (int) $post['ID'] ) ) {
-			// The meta-layer cap filter is the backstop; checking here too keeps
-			// the editor path from attempting writes it knows will be rejected.
+		} else {
 			update_post_meta( (int) $post['ID'], EU_AI_Label_Plugin::META_KEY, $status );
 		}
 
