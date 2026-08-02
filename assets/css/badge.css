@@ -29,6 +29,21 @@
 	height: auto;
 }
 
+/* Elementor Posts/Archive Posts ratio cards absolutely position the featured
+   image inside .elementor-post__thumbnail. Without this compatibility layer,
+   inserting our wrapper creates a zero-size positioning context: the image
+   disappears and the badge is clipped against the card's top edge. Fill the
+   existing ratio box so Elementor's own descendant image rules keep working
+   unchanged, including fit-height and hover-zoom variants. */
+.elementor-post__thumbnail > .eu-ai-label-wrap {
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	height: 100%;
+	max-width: none;
+}
+
 .eu-ai-label-badge {
 	position: absolute;
 	z-index: 2;
@@ -60,6 +75,37 @@
 	opacity: 1;
 	/* Purely informational overlay — never intercept clicks on the image. */
 	pointer-events: none;
+}
+
+.eu-ai-label-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 0.42em;
+	font-size: 1.05em;
+	line-height: 1;
+}
+
+/* Elementor background images have no <img> node to provide a positioning
+   context. JS adds this class only when Elementor left the wrapper static. */
+.eu-ai-label-background-wrap--relative {
+	position: relative;
+}
+
+/* Undisclosed-details variant: a compact "AI" circle rather than a text pill.
+   Used when the editor discloses AI involvement but not what was changed.
+   The two-class selector outranks the base .eu-ai-label-badge declarations. */
+.eu-ai-label-badge.eu-ai-label--ai_undisclosed {
+	justify-content: center;
+	width: 34px;
+	height: 34px;
+	max-width: none;
+	padding: 0;
+	/* Perfect circle instead of the rounded pill. */
+	border-radius: 50%;
+	letter-spacing: 0.02em;
+	/* Two glyphs never wrap; keep them centered on one line. */
+	white-space: nowrap;
 }
 
 /* Position: bottom-left keeps clear of sale badges and carousel controls. */

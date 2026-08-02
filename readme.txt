@@ -3,8 +3,8 @@ Contributors: lukjak, freemius
 Tags: ai, transparency, media-library, images, eu-ai-act
 Requires at least: 6.5
 Tested up to: 7.0
-Requires PHP: 8.1
-Stable tag: 0.3.0
+Requires PHP: 7.4
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,13 +20,15 @@ Built for EU WooCommerce stores that want a simple, honest way to disclose AI-ge
 
 * Per-image labeling directly in the Media Library, for unlimited images.
 * Three-state taxonomy: AI generated, AI modified, or No AI (no badge).
-* Server-side rendering — no front-end JavaScript required. Both featured/gallery images (via `wp_get_attachment_image`) and in-content images (Image blocks, galleries, and classic-editor images) are covered.
+* Server-side-first rendering. Featured/gallery images, in-content images, Elementor AJAX widgets, and Media Library-backed static Elementor backgrounds are covered; lightweight helpers support dynamic/background and Pro tooltip behavior.
 * An accessibility-first badge: always visible (no hover needed), high-contrast on any photo, `role="img"` with a screen-reader label, and a readable minimum size. The wording and pill shape mirror the EU standardized AI labels.
 * Fully localized badge text — English, Polish, German, French, Spanish, Italian, and Dutch — following the site or user locale.
 
 Labeling is manual and per-image by design: you stay in control of exactly what is disclosed.
 
 This plugin is part of the euailabel.app AI Act toolkit for e-commerce.
+
+**Need to audit images across an entire website?** [AI Act Icon](https://aiacticon.com/?utm_source=wordpress.org&utm_medium=plugin-readme&utm_campaign=eu-ai-label) discovers public website images and where they appear, then helps you classify them and maintain an audit history.
 
 EU AI Label is an independent tool that helps with transparency disclosures in the spirit of the EU AI Act (Regulation (EU) 2024/1689). It is not affiliated with, endorsed by, or an official labeling scheme of the European Union or any EU institution.
 
@@ -35,9 +37,12 @@ EU AI Label is an independent tool that helps with transparency disclosures in t
 A Pro upgrade adds, for stores that need more:
 
 * An adaptive badge that auto-adjusts to light or dark images.
+* Label Studio controls for background/text colors, border radius, and an optional Sparkles, AI Pen, or Robot icon.
 * Bulk labeling from the Media Library (list and grid views).
 * Optional "how it was altered" details shown in a badge tooltip (e.g. background removed, color modified).
 * A tamper-evident audit log of every label change (who, what, when), sealed with a hash chain.
+
+Label Studio is available under Settings → EU AI Label → Label Studio. Its live preview shows color, corner-radius, and icon changes immediately and reports the resulting WCAG AA text-contrast ratio before the style is saved. Badge wording remains localized and cannot be replaced. The compact “AI” mark stays circular and icon-free, while custom colors override the adaptive light-chip palette for consistent branding.
 
 The free plugin is a complete, unrestricted disclosure tool; Pro adds the refinements above. All Pro functionality lives in a separately distributed build — nothing in the free plugin is locked or limited.
 
@@ -56,15 +61,15 @@ No. Labeling is manual and per-image, by design. You decide what is disclosed.
 
 = Is the free version limited? =
 
-No. The free plugin is fully functional: you can label as many images as you like, and every feature it ships is available to everyone. Pro is a separate build that adds extras (adaptive badge, bulk labeling, alteration tooltips, an audit log). Labels always keep working and stay editable, even if you drop from Pro back to free.
+No. The free plugin is fully functional: you can label as many images as you like, and every feature it ships is available to everyone. Pro is a separate build that adds extras (Label Studio, adaptive badge, bulk labeling, alteration tooltips, and an audit log). Labels always keep working and stay editable, even if you drop from Pro back to free.
 
 = Can I change the badge text or its appearance? =
 
-No. The badge ships with a single, fixed, accessibility-first style, and its text is localized automatically. This is deliberate: a consistent, high-contrast disclosure keeps the label reliable across languages and themes, and cannot be accidentally styled into something illegible.
+The free badge uses a fixed, accessibility-first style. Pro includes Label Studio for changing background and text colors, border radius, and an optional icon, with a live WCAG contrast warning. Badge text remains fixed and localized automatically.
 
 = Which images get the badge? =
 
-Any image attached from your Media Library that you have labeled — whether it is a featured image, appears in a gallery, or is placed in post content as an Image block or classic-editor image. Externally hotlinked images and CSS background images have no attachment record, so they cannot be labeled.
+Any labeled Media Library image used as a featured image, in a gallery/carousel, in post content, or as a static Elementor background. Externally hotlinked images and raw CSS background URLs without a Media Library attachment ID cannot be labeled. Elementor background slideshows are skipped because one fixed label cannot accurately describe a changing image.
 
 = Is this legal advice or a guarantee of compliance? =
 
@@ -78,8 +83,27 @@ Plugin settings are removed on uninstall. Per-image labels stored in attachment 
 
 1. The AI transparency badge rendered on a front-end image (with the optional Pro alteration tooltip).
 2. Setting the AI label and alteration details on an attachment in the Media Library.
+3. Pro Label Studio with color controls, border radius, icon choices, live preview, and WCAG contrast feedback.
 
 == Changelog ==
+
+= 0.5.0 =
+* Added: Pro Label Studio with live preview, background/text colors, border radius, optional Sparkles/AI Pen/Robot icons, and a WCAG contrast warning.
+* Improved: Elementor support for AJAX-loaded widgets, custom galleries/carousels, and Media Library-backed static background images.
+* Fixed: Elementor ratio-card thumbnails no longer disappear when the label wrapper is inserted.
+* Fixed: Pro alteration tooltips inside linked thumbnails keep a single focus target and no longer block image links.
+* Added: WooCommerce product-editor controls for labeling featured and gallery images.
+* Improved: WooCommerce controls now use a native Product Data tab with live status feedback.
+* Added: a premium-only Woo Marketplace build with all Pro features and no external licensing runtime.
+* Added: HPOS compatibility declaration and testing against WooCommerce 10.8 and 10.9.
+* Changed: the minimum supported PHP version is now 7.4.
+
+= 0.4.1 =
+* Fixed: temporary Freemius pricing-page CSS now loads through WordPress enqueue APIs.
+* Added: a related AI Act Icon website-audit product link.
+
+= 0.4.0 =
+* Added: a new "AI (without details)" label for images where AI involvement is disclosed but the type of change is not. It renders as a compact, localized "AI" circle badge.
 
 = 0.3.0 =
 * Changed: removed the free-plan 10-image limit — the free plugin now labels unlimited images and is fully functional, per WordPress.org guidelines.

@@ -39,7 +39,11 @@ class EU_AI_Label_Renderer {
 	}
 
 	/**
-	 * Register (but do not force-enqueue) the badge stylesheet.
+	 * Register and enqueue the badge stylesheet on every front-end request.
+	 *
+	 * Elementor can inject Loop Grid and carousel items after the initial page
+	 * response. Loading this small stylesheet up front keeps those Ajax-rendered
+	 * labels styled even when the first response contained no labeled image.
 	 *
 	 * @return void
 	 */
@@ -60,6 +64,11 @@ class EU_AI_Label_Renderer {
 			array(),
 			$version
 		);
+
+		if ( ! is_admin() || wp_doing_ajax() ) {
+			wp_enqueue_style( 'eu-ai-label-badge' );
+			$this->style_enqueued = true;
+		}
 	}
 
 	/**
@@ -74,9 +83,34 @@ class EU_AI_Label_Renderer {
 				return __( 'AI generated', 'eu-ai-label' );
 			case EU_AI_Label_Plugin::STATUS_AI_EDITED:
 				return __( 'AI modified', 'eu-ai-label' );
+			case EU_AI_Label_Plugin::STATUS_AI_UNDISCLOSED:
+				// Short mark for the "AI involved, details undisclosed" circle badge.
+				return __( 'AI', 'eu-ai-label' );
 			default:
 				return '';
 		}
+	}
+
+	/**
+	 * Return the sanitized global badge position.
+	 *
+	 * @return string
+	 */
+	public static function badge_position() {
+		$options   = EU_AI_Label_Settings::get_options();
+		$position  = isset( $options['position'] ) ? sanitize_key( $options['position'] ) : '';
+		$positions = array( 'top-left', 'top-right', 'bottom-left', 'bottom-right' );
+
+		return in_array( $position, $positions, true ) ? $position : 'bottom-left';
+	}
+
+	/**
+	 * Return the positioning class shared by all rendering integrations.
+	 *
+	 * @return string
+	 */
+	public static function position_class() {
+		return 'eu-ai-label-pos--' . self::badge_position();
 	}
 
 	/**
@@ -101,29 +135,50 @@ class EU_AI_Label_Renderer {
 			return $html;
 		}
 
-		$status = get_post_meta( (int) $attachment_id, EU_AI_Label_Plugin::META_KEY, true );
-
-		// no_ai and missing meta render nothing: zero overhead, original markup untouched.
-		if ( ! EU_AI_Label_Plugin::status_has_badge( $status ) ) {
+		$badge = $this->badge_markup_for_attachment( (int) $attachment_id );
+		if ( '' === $badge ) {
 			return $html;
+		}
+
+		return sprintf(
+			'<figure class="eu-ai-label-wrap %1$s">%2$s%3$s</figure>',
+			esc_attr( self::position_class() ),
+			$html,
+			$badge
+		);
+	}
+
+	/**
+	 * Build badge markup for an attachment without wrapping an image element.
+	 *
+	 * Elementor background images do not have an <img> node to filter. This
+	 * public helper lets that integration reuse the exact same status checks,
+	 * accessibility markup, Pro filters, and assets as normal attachment images.
+	 *
+	 * @param int $attachment_id Attachment ID.
+	 * @return string Badge markup, or an empty string when no badge is required.
+	 */
+	public function badge_markup_for_attachment( $attachment_id ) {
+		$attachment_id = (int) $attachment_id;
+		$status        = get_post_meta( $attachment_id, EU_AI_Label_Plugin::META_KEY, true );
+
+		if ( ! EU_AI_Label_Plugin::status_has_badge( $status ) ) {
+			return '';
 		}
 
 		$text = self::badge_text( $status );
 		if ( '' === $text ) {
-			return $html;
+			return '';
 		}
 
-		// Ensure the stylesheet loads only when a badge is actually emitted.
-		if ( ! $this->style_enqueued && ! is_admin() ) {
+		if ( ! wp_style_is( 'eu-ai-label-badge', 'registered' ) ) {
+			$this->register_style();
+		} elseif ( ! $this->style_enqueued && ( ! is_admin() || wp_doing_ajax() ) ) {
 			wp_enqueue_style( 'eu-ai-label-badge' );
 			$this->style_enqueued = true;
 		}
 
-		return sprintf(
-			'<figure class="eu-ai-label-wrap eu-ai-label-pos--bottom-left">%1$s%2$s</figure>',
-			$html,
-			$this->badge_markup( $status, $text, (int) $attachment_id )
-		);
+		return $this->badge_markup( $status, $text, $attachment_id );
 	}
 
 	/**
@@ -183,13 +238,8 @@ class EU_AI_Label_Renderer {
 				continue;
 			}
 
-			$status = get_post_meta( (int) $matches[1], EU_AI_Label_Plugin::META_KEY, true );
-			if ( ! EU_AI_Label_Plugin::status_has_badge( $status ) ) {
-				continue;
-			}
-
-			$text = self::badge_text( $status );
-			if ( '' === $text ) {
+			$badge = $this->badge_markup_for_attachment( (int) $matches[1] );
+			if ( '' === $badge ) {
 				continue;
 			}
 
@@ -201,13 +251,13 @@ class EU_AI_Label_Renderer {
 			// Wrap only the <img> in an inline span (valid inside <p>/<figure>),
 			// then append the badge as a positioned sibling overlay.
 			$wrap = $dom->createElement( 'span' );
-			$wrap->setAttribute( 'class', 'eu-ai-label-wrap eu-ai-label-pos--bottom-left' );
+			$wrap->setAttribute( 'class', 'eu-ai-label-wrap ' . self::position_class() );
 			$parent->replaceChild( $wrap, $img );
 			$wrap->appendChild( $img );
 
 			$fragment = $dom->createDocumentFragment();
-			// badge_markup() is well-formed XML, so appendXML preserves SVG case.
-			if ( $fragment->appendXML( $this->badge_markup( $status, $text, (int) $matches[1] ) ) ) {
+			// Badge markup is well-formed XML, so appendXML preserves SVG case.
+			if ( $fragment->appendXML( $badge ) ) {
 				$wrap->appendChild( $fragment );
 				$changed = true;
 			}
@@ -215,11 +265,6 @@ class EU_AI_Label_Renderer {
 
 		if ( ! $changed ) {
 			return $content;
-		}
-
-		if ( ! $this->style_enqueued && ! is_admin() ) {
-			wp_enqueue_style( 'eu-ai-label-badge' );
-			$this->style_enqueued = true;
 		}
 
 		$out = '';
@@ -313,9 +358,25 @@ class EU_AI_Label_Renderer {
 			$attr_html .= sprintf( ' %s="%s"', $name, esc_attr( (string) $value ) );
 		}
 
+		$icon = '';
+		if ( $is_pro ) {
+			/**
+			 * Filter decorative markup displayed before the badge text on Pro sites.
+			 *
+			 * Returned markup MUST be well-formed XML and hidden from assistive
+			 * technology; the badge's aria-label remains its accessible name.
+			 *
+			 * @param string $icon          Icon markup.
+			 * @param int    $attachment_id Attachment ID.
+			 * @param string $status        Enum status.
+			 */
+			$icon = (string) apply_filters( 'eu_ai_label_badge_icon', '', (int) $attachment_id, $status );
+		}
+
 		$markup = sprintf(
-			'<span%1$s><span class="eu-ai-label-text" aria-hidden="true">%2$s</span></span>',
+			'<span%1$s>%2$s<span class="eu-ai-label-text" aria-hidden="true">%3$s</span></span>',
 			$attr_html,
+			$icon,
 			esc_html( $text )
 		);
 

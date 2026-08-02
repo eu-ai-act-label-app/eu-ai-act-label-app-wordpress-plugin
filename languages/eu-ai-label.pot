@@ -1,144 +1,483 @@
 # Copyright (C) 2026 EU AI Label
-# This file is distributed under the GPL-2.0-or-later license.
+# This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: EU AI Label 0.1.0\n"
-"Report-Msgid-Bugs-To: https://euailabel.app/\n"
+"Project-Id-Version: EU AI Label 0.5.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/app\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-02T21:44:35+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: eu-ai-label\n"
 
 #. Plugin Name of the plugin
+#. Author of the plugin
+#: eu-ai-label.php
+#: includes/class-settings.php:95
+#: includes/class-settings.php:96
+#: includes/class-settings.php:143
 msgid "EU AI Label"
 msgstr ""
 
-#: includes/class-renderer.php
-msgid "AI generated"
+#. Plugin URI of the plugin
+#: eu-ai-label.php
+msgid "https://euailabel.app/"
 msgstr ""
 
-#: includes/class-renderer.php
-msgid "AI modified"
+#. Description of the plugin
+#: eu-ai-label.php
+msgid "Adds visible, localized AI labels to images in the Media Library, in the spirit of EU AI Act Article 50 transparency obligations."
 msgstr ""
 
-#: includes/class-media-meta.php
+#: includes/class-media-meta.php:85
 msgid "— No label —"
 msgstr ""
 
-#: includes/class-media-meta.php
+#: includes/class-media-meta.php:86
 msgid "No AI"
 msgstr ""
 
-#: includes/class-media-meta.php
+#: includes/class-media-meta.php:87
+#: includes/class-renderer.php:85
+msgid "AI modified"
+msgstr ""
+
+#: includes/class-media-meta.php:88
+#: includes/class-renderer.php:83
+msgid "AI generated"
+msgstr ""
+
+#: includes/class-media-meta.php:89
+msgid "AI (without details)"
+msgstr ""
+
+#: includes/class-media-meta.php:108
+msgid "No label"
+msgstr ""
+
+#: includes/class-media-meta.php:126
+#: includes/class-media-meta.php:188
+#: includes/class-woocommerce.php:188
 msgid "AI label"
 msgstr ""
 
-#: includes/class-media-meta.php
+#: includes/class-media-meta.php:185
 msgid "Declare whether this image was generated or edited by AI (EU AI Act Art. 50)."
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Badge appearance"
+#: includes/class-renderer.php:88
+msgid "AI"
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Customize how the AI label badge looks. The badge text itself is localized automatically and cannot be changed here."
+#: includes/class-settings.php:120
+msgid "Status"
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Position"
+#: includes/class-settings.php:227
+msgid "Adds visible, localized AI transparency labels to your images, in the spirit of EU AI Act Article 50."
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Size"
+#: includes/class-settings.php:231
+msgid "Badge preview"
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Background color"
+#: includes/class-settings.php:243
+msgid "Pro Label Studio controls the badge colors, corners, and optional icon. With default colors, adaptive contrast can still switch to a light chip on dark images."
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Text color"
+#: includes/class-settings.php:245
+msgid "The badge style is fixed and meets WCAG AA contrast on any image. Its text follows the visitor’s language automatically."
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Show icon"
+#: includes/class-settings.php:252
+msgid "Labeled images"
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Top left"
+#: includes/class-settings.php:273
+msgid "Go to the Media Library"
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Top right"
+#: includes/class-settings.php:279
+msgid "How to label an image"
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Bottom left"
+#: includes/class-settings.php:281
+msgid "Open the Media Library and select an image."
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Bottom right"
+#: includes/class-settings.php:282
+msgid "Set its “AI label” to AI generated or AI modified."
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Small"
+#: includes/class-settings.php:283
+msgid "Done — the badge appears automatically wherever the image is shown on the front end."
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Medium"
+#: includes/class-settings.php:288
+msgid "Plan"
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Large"
+#: includes/class-settings.php:293
+msgid "Woo Marketplace — all premium features active"
 msgstr ""
 
-#: includes/class-settings.php
-msgid "Display an icon next to the label text"
+#: includes/class-settings.php:295
+msgid "Pro — Label Studio and adaptive badge active"
 msgstr ""
 
-#: includes/pro__premium_only/class-details.php
-msgid "Background removed"
+#: includes/class-settings.php:295
+msgid "Free"
 msgstr ""
 
-#: includes/pro__premium_only/class-details.php
-msgid "Color modified"
+#: includes/class-settings.php:303
+msgid "Your Woo Marketplace edition includes product-editor controls, Label Studio, adaptive badges, bulk labeling, alteration details, and the audit log."
 msgstr ""
 
-#: includes/pro__premium_only/class-details.php
-msgid "Lighting adjusted"
+#: includes/class-settings.php:305
+msgid "The free plugin labels unlimited images with the always-visible, WCAG AA badge. Pro adds Label Studio, an adaptive badge, bulk labeling, alteration details with a badge tooltip, and a tamper-evident audit log."
 msgstr ""
 
-#: includes/pro__premium_only/class-details.php
-msgid "Objects added or removed"
+#: includes/class-woocommerce.php:74
+msgid "AI image labels"
 msgstr ""
 
-#: includes/pro__premium_only/class-details.php
-msgid "Retouched (skin or blemishes)"
+#: includes/class-woocommerce.php:128
+msgid "AI labels for product images"
 msgstr ""
 
-#: includes/pro__premium_only/class-details.php
-msgid "Resolution enhanced (upscaled)"
+#: includes/class-woocommerce.php:129
+msgid "Set the disclosure shown anywhere each product image appears in your store."
 msgstr ""
 
-#: includes/pro__premium_only/class-details.php
+#: includes/class-woocommerce.php:130
+msgid "After adding or removing product images, save the product once to refresh this list."
+msgstr ""
+
+#: includes/class-woocommerce.php:132
+msgid "Open Label Studio"
+msgstr ""
+
+#: includes/class-woocommerce.php:139
+msgid "Add a product image or gallery image, then save the product to configure its AI labels here."
+msgstr ""
+
+#: includes/class-woocommerce.php:171
+msgid "Untitled image"
+msgstr ""
+
+#: includes/class-woocommerce.php:180
+msgid "Product image"
+msgstr ""
+
+#: includes/class-woocommerce.php:180
+msgid "Gallery image"
+msgstr ""
+
+#: includes/class-woocommerce.php:197
+#: includes/pro__premium_only/class-details.php:157
 msgid "AI alterations"
 msgstr ""
 
-#: includes/pro__premium_only/class-details.php
+#: includes/pro__premium_only/class-audit-log.php:399
+msgid "Audit log"
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:433
+msgid "AI label audit log"
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:435
+msgid "Every AI label change is recorded here — file, change, who, and when — and sealed with a tamper-evident hash chain."
+msgstr ""
+
+#. translators: %s: number of log entries.
+#: includes/pro__premium_only/class-audit-log.php:443
+#, php-format
+msgid "Integrity verified: the hash chain over %s entry is intact."
+msgid_plural "Integrity verified: the hash chain over %s entries is intact."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: log entry number.
+#: includes/pro__premium_only/class-audit-log.php:453
+#, php-format
+msgid "Integrity check FAILED at entry #%s — the log appears to have been modified outside WordPress."
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:461
+msgid "No AI label changes have been recorded yet."
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:470
+msgid "#"
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:471
+msgid "Date (site time)"
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:472
+msgid "File"
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:473
+msgid "Change"
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:474
+msgid "Alterations"
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:475
+msgid "Changed by"
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:488
+msgid "(deleted)"
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:498
+msgid "System"
+msgstr ""
+
+#: includes/pro__premium_only/class-audit-log.php:534
+msgid "Alterations updated"
+msgstr ""
+
+#: includes/pro__premium_only/class-bulk-actions.php:87
+msgid "AI label: remove"
+msgstr ""
+
+#. translators: %s: AI label name, e.g. "AI generated".
+#: includes/pro__premium_only/class-bulk-actions.php:90
+#, php-format
+msgid "AI label: %s"
+msgstr ""
+
+#. translators: %s: number of images.
+#: includes/pro__premium_only/class-bulk-actions.php:141
+#, php-format
+msgid "%s image updated."
+msgid_plural "%s images updated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/pro__premium_only/class-bulk-actions.php:179
+msgid "Apply AI label"
+msgstr ""
+
+#: includes/pro__premium_only/class-bulk-actions.php:180
+msgid "AI label…"
+msgstr ""
+
+#: includes/pro__premium_only/class-bulk-actions.php:181
+msgid "Choose a label to apply."
+msgstr ""
+
+#: includes/pro__premium_only/class-bulk-actions.php:182
+msgid "Select one or more images first."
+msgstr ""
+
+#. translators: %d: number of images.
+#: includes/pro__premium_only/class-bulk-actions.php:184
+#, php-format
+msgid "%d image(s) updated."
+msgstr ""
+
+#: includes/pro__premium_only/class-bulk-actions.php:185
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#: includes/pro__premium_only/class-bulk-actions.php:200
+msgid "You are not allowed to do this."
+msgstr ""
+
+#: includes/pro__premium_only/class-bulk-actions.php:205
+msgid "Invalid label."
+msgstr ""
+
+#: includes/pro__premium_only/class-bulk-actions.php:287
+msgid "Remove label"
+msgstr ""
+
+#: includes/pro__premium_only/class-details.php:91
+msgid "Background removed"
+msgstr ""
+
+#: includes/pro__premium_only/class-details.php:92
+msgid "Color modified"
+msgstr ""
+
+#: includes/pro__premium_only/class-details.php:93
+msgid "Lighting adjusted"
+msgstr ""
+
+#: includes/pro__premium_only/class-details.php:94
+msgid "Objects added or removed"
+msgstr ""
+
+#: includes/pro__premium_only/class-details.php:95
+msgid "Retouched (skin or blemishes)"
+msgstr ""
+
+#: includes/pro__premium_only/class-details.php:96
+msgid "Resolution enhanced (upscaled)"
+msgstr ""
+
+#: includes/pro__premium_only/class-details.php:160
 msgid "Optional: what was changed with AI. Shown in a tooltip on the front-end badge."
 msgstr ""
 
-#: includes/pro__premium_only/class-details.php
+#: includes/pro__premium_only/class-details.php:211
 msgid "This image was generated with AI."
 msgstr ""
 
-#: includes/pro__premium_only/class-details.php
+#: includes/pro__premium_only/class-details.php:212
 msgid "This image was altered with AI."
 msgstr ""
 
 #. translators: %s: comma-separated list of AI alterations, e.g. "Background removed, Color modified".
-#: includes/pro__premium_only/class-details.php
+#: includes/pro__premium_only/class-details.php:216
+#, php-format
 msgid "Changes made: %s."
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:46
+msgid "No icon"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:50
+msgid "Sparkles"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:54
+msgid "AI pen"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:58
+msgid "Robot"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:71
+msgid "Top left"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:72
+msgid "Top right"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:73
+msgid "Bottom left"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:74
+msgid "Bottom right"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:86
+msgid "Small"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:93
+msgid "Medium"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:100
+msgid "Large"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:151
+msgid "Label Studio"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:187
+msgid "You are not allowed to change these settings."
+msgstr ""
+
+#. translators: %s: calculated contrast ratio, for example 12.45.
+#: includes/pro__premium_only/class-label-studio.php:220
+#, php-format
+msgid "Text contrast passes WCAG AA (%s:1)."
+msgstr ""
+
+#. translators: %s: calculated contrast ratio, for example 2.10.
+#: includes/pro__premium_only/class-label-studio.php:222
+#, php-format
+msgid "Text contrast is too low for WCAG AA (%s:1). Choose more distinct colors."
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:225
+msgid "Label Studio settings saved."
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:230
+msgid "Design your label"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:231
+msgid "Create one consistent label style for product, gallery, and content images across your store."
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:237
+msgid "Quick styles"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:238
+msgid "Classic"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:239
+msgid "EU blue"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:240
+msgid "Minimal light"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:244
+msgid "Background color"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:250
+msgid "Text color"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:256
+msgid "Border radius"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:258
+msgid "pixels"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:262
+msgid "Label size"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:272
+msgid "Position on image"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:283
+msgid "Icon before text"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:293
+msgid "Save label style"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:298
+msgid "Live preview"
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:299
+msgid "Preview the saved design over a representative product image."
+msgstr ""
+
+#: includes/pro__premium_only/class-label-studio.php:307
+msgid "The compact AI-only mark stays circular and does not show an icon. Custom colors override adaptive contrast."
 msgstr ""

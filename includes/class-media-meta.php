@@ -82,10 +82,11 @@ class EU_AI_Label_Media_Meta {
 	 */
 	public static function status_choices() {
 		return array(
-			''                                      => __( '— No label —', 'eu-ai-label' ),
-			EU_AI_Label_Plugin::STATUS_NO_AI        => __( 'No AI', 'eu-ai-label' ),
-			EU_AI_Label_Plugin::STATUS_AI_EDITED    => __( 'AI modified', 'eu-ai-label' ),
-			EU_AI_Label_Plugin::STATUS_AI_GENERATED => __( 'AI generated', 'eu-ai-label' ),
+			''                                        => __( '— No label —', 'eu-ai-label' ),
+			EU_AI_Label_Plugin::STATUS_NO_AI          => __( 'No AI', 'eu-ai-label' ),
+			EU_AI_Label_Plugin::STATUS_AI_EDITED      => __( 'AI modified', 'eu-ai-label' ),
+			EU_AI_Label_Plugin::STATUS_AI_GENERATED   => __( 'AI generated', 'eu-ai-label' ),
+			EU_AI_Label_Plugin::STATUS_AI_UNDISCLOSED => __( 'AI (without details)', 'eu-ai-label' ),
 		);
 	}
 

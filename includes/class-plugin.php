@@ -34,6 +34,14 @@ final class EU_AI_Label_Plugin {
 	const STATUS_AI_EDITED = 'ai_edited';
 
 	/**
+	 * Enum: AI was involved, but the editor chose not to disclose whether the
+	 * image was generated or edited. Renders a compact "AI" circle badge.
+	 *
+	 * @var string
+	 */
+	const STATUS_AI_UNDISCLOSED = 'ai_undisclosed';
+
+	/**
 	 * Enum: no AI involvement (default / no badge).
 	 *
 	 * @var string
@@ -75,6 +83,7 @@ final class EU_AI_Label_Plugin {
 		return array(
 			self::STATUS_AI_GENERATED,
 			self::STATUS_AI_EDITED,
+			self::STATUS_AI_UNDISCLOSED,
 			self::STATUS_NO_AI,
 		);
 	}
@@ -98,7 +107,7 @@ final class EU_AI_Label_Plugin {
 	 * @return bool
 	 */
 	public static function status_has_badge( $status ) {
-		return in_array( $status, array( self::STATUS_AI_GENERATED, self::STATUS_AI_EDITED ), true );
+		return in_array( $status, array( self::STATUS_AI_GENERATED, self::STATUS_AI_EDITED, self::STATUS_AI_UNDISCLOSED ), true );
 	}
 
 	/**
@@ -111,18 +120,21 @@ final class EU_AI_Label_Plugin {
 		require_once EU_AI_LABEL_DIR . 'includes/class-i18n.php';
 		require_once EU_AI_LABEL_DIR . 'includes/class-media-meta.php';
 		require_once EU_AI_LABEL_DIR . 'includes/class-renderer.php';
+		require_once EU_AI_LABEL_DIR . 'includes/class-elementor.php';
 		require_once EU_AI_LABEL_DIR . 'includes/class-settings.php';
+		require_once EU_AI_LABEL_DIR . 'includes/class-woocommerce.php';
 
 		( new EU_AI_Label_I18n() )->register();
 		( new EU_AI_Label_Media_Meta() )->register();
-		( new EU_AI_Label_Renderer() )->register();
+		$renderer = new EU_AI_Label_Renderer();
+		$renderer->register();
+		( new EU_AI_Label_Elementor( $renderer ) )->register();
 		( new EU_AI_Label_Settings() )->register();
+		( new EU_AI_Label_WooCommerce() )->register();
 
 		/*
-		 * Pro features (adaptive auto-contrast badge, etc.) load only for
-		 * entitled sites. The `__premium_only` folder is stripped by Freemius
-		 * when it builds the free version, so the file is absent there and this
-		 * is a no-op on free installs.
+		 * Pro features load only for entitled distributions. Free packages omit
+		 * the `__premium_only` folder, so this is a no-op on those installs.
 		 */
 		if ( EU_AI_Label_License::is_pro() && file_exists( EU_AI_LABEL_DIR . 'includes/pro__premium_only/class-pro.php' ) ) {
 			require_once EU_AI_LABEL_DIR . 'includes/pro__premium_only/class-pro.php';

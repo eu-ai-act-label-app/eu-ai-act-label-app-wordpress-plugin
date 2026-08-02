@@ -25,7 +25,8 @@
 
 /* Badge-bearing states mirror the front-end pill. */
 .eu-ai-label-chip--ai_generated,
-.eu-ai-label-chip--ai_edited {
+.eu-ai-label-chip--ai_edited,
+.eu-ai-label-chip--ai_undisclosed {
 	background: #1d1d1b;
 	border-color: #1d1d1b;
 	color: #ffffff;
@@ -49,6 +50,101 @@
 /* Muted em-dash placeholder in the Media Library column. */
 .eu-ai-label-column-empty {
 	color: #a7aaad;
+}
+
+.eu-ai-label-product-images {
+	display: grid;
+	gap: 16px;
+	padding: 12px;
+}
+
+#woocommerce-product-data ul.wc-tabs li.eu_ai_label_options a::before {
+	font-family: dashicons;
+	content: "\f128";
+}
+
+#eu_ai_label_product_data {
+	padding-bottom: 0;
+}
+
+.eu-ai-label-product-data__intro p,
+.eu-ai-label-product-data__empty p {
+	margin: 0;
+	padding: 12px;
+}
+
+.eu-ai-label-product-data__intro .description {
+	display: block;
+	margin-top: 4px;
+}
+
+.eu-ai-label-product-data__studio-link {
+	margin-top: 10px !important;
+}
+
+.eu-ai-label-product-data__empty {
+	border-top: 1px solid #eee;
+	background: #f6f7f7;
+}
+
+.eu-ai-label-product-image {
+	display: grid;
+	grid-template-columns: 96px minmax(0, 1fr);
+	gap: 16px;
+	padding: 16px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #fff;
+}
+
+.eu-ai-label-product-image__preview img {
+	display: block;
+	width: 96px;
+	height: 96px;
+	object-fit: cover;
+}
+
+.eu-ai-label-product-image__fields {
+	display: grid;
+	gap: 8px;
+}
+
+.eu-ai-label-product-image__heading {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.eu-ai-label-product-image__heading .description {
+	display: block;
+	margin-top: 2px;
+}
+
+.eu-ai-label-product-image__select {
+	width: min(100%, 320px);
+}
+
+.eu-ai-label-product-image__details[disabled] {
+	opacity: 0.55;
+}
+
+.eu-ai-label-product-image__fields > label > span,
+.eu-ai-label-product-image__fields legend {
+	display: block;
+	margin-bottom: 4px;
+	font-weight: 600;
+}
+
+.eu-ai-label-product-image__fields fieldset label {
+	display: inline-block;
+	margin: 0 12px 6px 0;
+}
+
+@media screen and (max-width: 782px) {
+	.eu-ai-label-product-image {
+		grid-template-columns: 1fr;
+	}
 }
 
 .column-eu_ai_label {
@@ -172,4 +268,202 @@
 	font-size: 18px;
 	font-weight: 600;
 	color: #1d2327;
+}
+
+/* ----- Pro Label Studio ----- */
+
+.eu-ai-label-studio {
+	display: grid;
+	grid-template-columns: minmax(320px, 520px) minmax(280px, 420px);
+	gap: 16px;
+	max-width: 960px;
+	margin-top: 16px;
+}
+
+.eu-ai-label-studio__controls > .description {
+	margin-bottom: 20px;
+}
+
+.eu-ai-label-studio fieldset {
+	min-width: 0;
+}
+
+.eu-ai-label-studio fieldset > legend {
+	font-weight: 600;
+}
+
+.eu-ai-label-studio__presets {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0 0 20px;
+	padding: 0 0 20px;
+	border: 0;
+	border-bottom: 1px solid #dcdcde;
+}
+
+.eu-ai-label-studio__presets legend {
+	width: 100%;
+	margin-bottom: 8px;
+}
+
+.eu-ai-label-studio__row {
+	display: grid;
+	grid-template-columns: minmax(130px, 1fr) auto auto;
+	align-items: center;
+	gap: 10px;
+	margin: 14px 0;
+}
+
+.eu-ai-label-studio__row > label {
+	font-weight: 600;
+}
+
+.eu-ai-label-studio__row input[type="color"] {
+	width: 46px;
+	height: 34px;
+	padding: 2px;
+}
+
+.eu-ai-label-studio__choices {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px;
+	margin: 20px 0 0;
+	padding: 0;
+	border: 0;
+}
+
+.eu-ai-label-studio__choices legend {
+	grid-column: 1 / -1;
+	margin-bottom: 2px;
+}
+
+.eu-ai-label-studio__choices label {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	padding: 9px;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	background: #f6f7f7;
+}
+
+.eu-ai-label-studio__choices label:has(input:checked) {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
+	background: #f0f6fc;
+}
+
+.eu-ai-label-studio__sizes {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.eu-ai-label-studio__position-icon {
+	position: relative;
+	width: 30px;
+	height: 22px;
+	border: 1px solid #8c8f94;
+	border-radius: 3px;
+	background: #fff;
+}
+
+.eu-ai-label-studio__position-icon i {
+	position: absolute;
+	width: 10px;
+	height: 5px;
+	border-radius: 3px;
+	background: #1d2327;
+}
+
+.eu-ai-label-studio__position-icon--top-left i {
+	top: 3px;
+	left: 3px;
+}
+
+.eu-ai-label-studio__position-icon--top-right i {
+	top: 3px;
+	right: 3px;
+}
+
+.eu-ai-label-studio__position-icon--bottom-left i {
+	bottom: 3px;
+	left: 3px;
+}
+
+.eu-ai-label-studio__position-icon--bottom-right i {
+	right: 3px;
+	bottom: 3px;
+}
+
+.eu-ai-label-studio__icon-glyph {
+	min-width: 1.25em;
+	font-size: 18px;
+	text-align: center;
+}
+
+.eu-ai-label-studio__preview {
+	position: relative;
+	height: 220px;
+	margin: 12px 0;
+	border-radius: 6px;
+	background: linear-gradient(145deg, #d9e7ef, #857768 55%, #252b35);
+	overflow: hidden;
+}
+
+.eu-ai-label-studio__preview-badge {
+	position: absolute;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.42em;
+	box-sizing: border-box;
+	max-width: calc(100% - 24px);
+	padding: 4px 11px;
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.25;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.eu-ai-label-studio__preview[data-preview-position="top-left"] .eu-ai-label-studio__preview-badge {
+	top: 12px;
+	left: 12px;
+}
+
+.eu-ai-label-studio__preview[data-preview-position="top-right"] .eu-ai-label-studio__preview-badge {
+	top: 12px;
+	right: 12px;
+}
+
+.eu-ai-label-studio__preview[data-preview-position="bottom-left"] .eu-ai-label-studio__preview-badge {
+	bottom: 12px;
+	left: 12px;
+}
+
+.eu-ai-label-studio__preview[data-preview-position="bottom-right"] .eu-ai-label-studio__preview-badge {
+	right: 12px;
+	bottom: 12px;
+}
+
+.eu-ai-label-studio__contrast {
+	font-weight: 600;
+	color: #008a20;
+}
+
+.eu-ai-label-studio__contrast--warning {
+	color: #b32d2e;
+}
+
+@media screen and (max-width: 782px) {
+	.eu-ai-label-studio {
+		grid-template-columns: 1fr;
+	}
+
+	.eu-ai-label-studio__sizes,
+	.eu-ai-label-studio__choices {
+		grid-template-columns: 1fr;
+	}
 }

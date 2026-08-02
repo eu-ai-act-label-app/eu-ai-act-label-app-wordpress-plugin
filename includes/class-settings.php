@@ -2,10 +2,8 @@
 /**
  * Admin page for the plugin (status + guidance).
  *
- * Appearance customization is intentionally omitted: the badge ships with a
- * single, fixed, WCAG-AA style. This page gives the plugin a visible home under
- * Settings (and a menu slug for Freemius to attach its account/opt-in links to)
- * without exposing look-and-feel controls.
+ * The free badge ships with a fixed WCAG-AA style. Pro features can add their
+ * own settings tabs, including Label Studio appearance controls.
  *
  * @package EU_AI_Label
  */
@@ -18,31 +16,33 @@ defined( 'ABSPATH' ) || exit;
 class EU_AI_Label_Settings {
 
 	/**
-	 * Option name reserved for future appearance settings.
+	 * Option name for shared appearance settings.
 	 *
 	 * @var string
 	 */
 	const OPTION = 'eu_ai_label_options';
 
 	/**
-	 * Admin page slug (also the Freemius menu slug).
+	 * Admin page slug.
 	 *
 	 * @var string
 	 */
 	const PAGE = 'eu-ai-label';
 
 	/**
-	 * Default appearance options (kept for activation defaults / future use).
+	 * Default appearance options.
 	 *
 	 * @return array
 	 */
 	public static function get_defaults() {
 		return array(
-			'position'   => 'bottom-left',
-			'bg_color'   => '#0b0b0c',
-			'text_color' => '#ffffff',
-			'size'       => 'm',
-			'show_icon'  => 1,
+			'position'      => 'bottom-left',
+			'bg_color'      => '#1d1d1b',
+			'text_color'    => '#ffffff',
+			'size'          => 'm',
+			'show_icon'     => 1,
+			'border_radius' => 999,
+			'icon'          => 'none',
 		);
 	}
 
@@ -220,8 +220,9 @@ class EU_AI_Label_Settings {
 	 * @return void
 	 */
 	private function render_status_tab() {
-		$is_pro = class_exists( 'EU_AI_Label_License' ) && EU_AI_Label_License::is_pro();
-		$counts = self::get_status_counts();
+		$is_pro         = class_exists( 'EU_AI_Label_License' ) && EU_AI_Label_License::is_pro();
+		$is_woocommerce = defined( 'EU_AI_LABEL_DISTRIBUTION' ) && 'woocommerce' === EU_AI_LABEL_DISTRIBUTION;
+		$counts         = self::get_status_counts();
 		?>
 			<p><?php echo esc_html__( 'Adds visible, localized AI transparency labels to your images, in the spirit of EU AI Act Article 50.', 'eu-ai-label' ); ?></p>
 
@@ -239,7 +240,7 @@ class EU_AI_Label_Settings {
 					<p class="description">
 						<?php
 						if ( $is_pro ) {
-							echo esc_html__( 'The badge style is fixed and meets WCAG AA contrast. Your Pro adaptive badge automatically switches to the light chip on dark images.', 'eu-ai-label' );
+							echo esc_html__( 'Pro Label Studio controls the badge colors, corners, and optional icon. With default colors, adaptive contrast can still switch to a light chip on dark images.', 'eu-ai-label' );
 						} else {
 							echo esc_html__( 'The badge style is fixed and meets WCAG AA contrast on any image. Its text follows the visitor’s language automatically.', 'eu-ai-label' );
 						}
@@ -257,6 +258,10 @@ class EU_AI_Label_Settings {
 						<div>
 							<?php echo wp_kses_post( EU_AI_Label_Media_Meta::status_chip( EU_AI_Label_Plugin::STATUS_AI_EDITED ) ); ?>
 							<span class="eu-ai-label-count"><?php echo esc_html( number_format_i18n( $counts[ EU_AI_Label_Plugin::STATUS_AI_EDITED ] ) ); ?></span>
+						</div>
+						<div>
+							<?php echo wp_kses_post( EU_AI_Label_Media_Meta::status_chip( EU_AI_Label_Plugin::STATUS_AI_UNDISCLOSED ) ); ?>
+							<span class="eu-ai-label-count"><?php echo esc_html( number_format_i18n( $counts[ EU_AI_Label_Plugin::STATUS_AI_UNDISCLOSED ] ) ); ?></span>
 						</div>
 						<div>
 							<?php echo wp_kses_post( EU_AI_Label_Media_Meta::status_chip( EU_AI_Label_Plugin::STATUS_NO_AI ) ); ?>
@@ -281,9 +286,25 @@ class EU_AI_Label_Settings {
 
 				<div class="eu-ai-label-card">
 					<h2><?php echo esc_html__( 'Plan', 'eu-ai-label' ); ?></h2>
-					<p><strong><?php echo esc_html( $is_pro ? __( 'Pro — adaptive auto-contrast badge active', 'eu-ai-label' ) : __( 'Free', 'eu-ai-label' ) ); ?></strong></p>
+					<p>
+						<strong>
+							<?php
+							if ( $is_woocommerce ) {
+								echo esc_html__( 'Woo Marketplace — all premium features active', 'eu-ai-label' );
+							} else {
+								echo esc_html( $is_pro ? __( 'Pro — Label Studio and adaptive badge active', 'eu-ai-label' ) : __( 'Free', 'eu-ai-label' ) );
+							}
+							?>
+						</strong>
+					</p>
 					<p class="description">
-						<?php echo esc_html__( 'The free plugin labels unlimited images with the always-visible, WCAG AA badge. Pro adds an adaptive badge, bulk labeling, alteration details with a badge tooltip, and a tamper-evident audit log.', 'eu-ai-label' ); ?>
+						<?php
+						if ( $is_woocommerce ) {
+							echo esc_html__( 'Your Woo Marketplace edition includes product-editor controls, Label Studio, adaptive badges, bulk labeling, alteration details, and the audit log.', 'eu-ai-label' );
+						} else {
+							echo esc_html__( 'The free plugin labels unlimited images with the always-visible, WCAG AA badge. Pro adds Label Studio, an adaptive badge, bulk labeling, alteration details with a badge tooltip, and a tamper-evident audit log.', 'eu-ai-label' );
+						}
+						?>
 					</p>
 				</div>
 			</div>
