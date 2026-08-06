@@ -26,6 +26,16 @@ class EU_AI_Label_Renderer {
 	private $style_enqueued = false;
 
 	/**
+	 * Attachment IDs resolved from image URLs during this request.
+	 *
+	 * Elementor post-content widgets can render the same image more than once,
+	 * so cache both successful and failed lookups to avoid repeated queries.
+	 *
+	 * @var array<string,int>
+	 */
+	private $attachment_ids_by_url = array();
+
+	/**
 	 * Register hooks.
 	 *
 	 * @return void
@@ -188,21 +198,30 @@ class EU_AI_Label_Renderer {
 	 * media-library images (block editor, gallery block, and classic editor),
 	 * so in-content images get the same disclosure as featured/gallery images.
 	 *
-	 * @param string $content Post content HTML.
+	 * Elementor featured-image widgets sometimes render a plain image URL and
+	 * omit WordPress' `wp-image-{ID}` class. Integrations can pass the known
+	 * attachment ID as a fallback; it is applied to the first otherwise
+	 * unidentified image only.
+	 *
+	 * @param string $content                Post content HTML.
+	 * @param int    $fallback_attachment_id Optional attachment ID for the first
+	 *                                       image without a wp-image class.
 	 * @return string
 	 */
-	public function filter_content( $content ) {
+	public function filter_content( $content, $fallback_attachment_id = 0 ) {
 		if ( ! is_string( $content ) || '' === $content ) {
 			return $content;
 		}
+
+		$fallback_attachment_id = (int) $fallback_attachment_id;
 
 		// Same admin guard as wrap_image: no stylesheet there, so no wrapping.
 		if ( is_admin() && ! wp_doing_ajax() ) {
 			return $content;
 		}
 
-		// Fast path: only attachment-backed images carry a wp-image-{ID} class.
-		if ( false === strpos( $content, 'wp-image-' ) || ! class_exists( 'DOMDocument' ) ) {
+		// Fast path: there is nothing to inspect without an image element.
+		if ( false === stripos( $content, '<img' ) || ! class_exists( 'DOMDocument' ) ) {
 			return $content;
 		}
 
@@ -225,7 +244,8 @@ class EU_AI_Label_Renderer {
 			return $content;
 		}
 
-		$changed = false;
+		$changed       = false;
+		$fallback_used = false;
 
 		// Snapshot the list first: the tree is mutated inside the loop.
 		foreach ( iterator_to_array( $dom->getElementsByTagName( 'img' ) ) as $img ) {
@@ -233,12 +253,24 @@ class EU_AI_Label_Renderer {
 				continue;
 			}
 
-			$class = $img->getAttribute( 'class' );
-			if ( ! preg_match( '/(?:^|\s)wp-image-(\d+)(?:\s|$)/', $class, $matches ) ) {
+			$class         = $img->getAttribute( 'class' );
+			$attachment_id = 0;
+			if ( preg_match( '/(?:^|\s)wp-image-(\d+)(?:\s|$)/', $class, $matches ) ) {
+				$attachment_id = (int) $matches[1];
+			} else {
+				$attachment_id = $this->attachment_id_from_image_url( $img );
+			}
+
+			if ( 0 >= $attachment_id && 0 < $fallback_attachment_id && ! $fallback_used ) {
+				$attachment_id = $fallback_attachment_id;
+				$fallback_used = true;
+			}
+
+			if ( 0 >= $attachment_id ) {
 				continue;
 			}
 
-			$badge = $this->badge_markup_for_attachment( (int) $matches[1] );
+			$badge = $this->badge_markup_for_attachment( $attachment_id );
 			if ( '' === $badge ) {
 				continue;
 			}
@@ -273,6 +305,96 @@ class EU_AI_Label_Renderer {
 		}
 
 		return $out;
+	}
+
+	/**
+	 * Resolve an attachment ID from image URL attributes.
+	 *
+	 * Some Elementor post-content widgets omit the `wp-image-{ID}` class, while
+	 * optimization plugins move the real URL from `src` into a lazy-load data
+	 * attribute. WordPress' attachment lookup only returns locally registered
+	 * Media Library files, so external and arbitrary URLs remain untouched.
+	 *
+	 * @param DOMElement $img Image node.
+	 * @return int Attachment ID, or zero when the image is not locally owned.
+	 */
+	private function attachment_id_from_image_url( DOMElement $img ) {
+		$url_attributes = array( 'src', 'data-src', 'data-lazy-src', 'data-lzl-src' );
+		foreach ( $url_attributes as $attribute ) {
+			$attachment_id = $this->attachment_id_from_url( $img->getAttribute( $attribute ) );
+			if ( 0 < $attachment_id ) {
+				return $attachment_id;
+			}
+		}
+
+		$srcset_attributes = array( 'srcset', 'data-srcset', 'data-lazy-srcset', 'data-lzl-srcset' );
+		foreach ( $srcset_attributes as $attribute ) {
+			$srcset = trim( $img->getAttribute( $attribute ) );
+			if ( '' === $srcset ) {
+				continue;
+			}
+
+			$candidates = preg_split( '/\s*,\s*/', $srcset );
+			if ( ! is_array( $candidates ) ) {
+				continue;
+			}
+
+			foreach ( $candidates as $candidate ) {
+				$parts = preg_split( '/\s+/', trim( $candidate ) );
+				$url   = is_array( $parts ) && isset( $parts[0] ) ? $parts[0] : '';
+
+				$attachment_id = $this->attachment_id_from_url( $url );
+				if ( 0 < $attachment_id ) {
+					return $attachment_id;
+				}
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Resolve one local Media Library URL, including generated size variants.
+	 *
+	 * @param string $url Candidate image URL.
+	 * @return int Attachment ID, or zero when not found.
+	 */
+	private function attachment_id_from_url( $url ) {
+		$url = html_entity_decode( trim( (string) $url ), ENT_QUOTES, 'UTF-8' );
+		if ( '' === $url || 0 === strpos( $url, 'data:' ) || 0 === strpos( $url, 'blob:' ) ) {
+			return 0;
+		}
+
+		// Query strings and fragments are not part of WordPress' attached-file
+		// metadata and would prevent attachment_url_to_postid() from matching.
+		$clean_url = preg_replace( '/[?#].*$/', '', $url );
+		if ( ! is_string( $clean_url ) || '' === $clean_url ) {
+			return 0;
+		}
+
+		$urls = array( $clean_url );
+		// WordPress stores the original/scaled upload path, not each generated
+		// `-WIDTHxHEIGHT` file, in the attachment's _wp_attached_file metadata.
+		$full_size_url = preg_replace( '/-\d+x\d+(?=\.(?:avif|gif|jpe?g|png|webp)$)/i', '', $clean_url );
+		if ( is_string( $full_size_url ) && $full_size_url !== $clean_url ) {
+			$urls[] = $full_size_url;
+		}
+
+		foreach ( $urls as $candidate_url ) {
+			if ( ! array_key_exists( $candidate_url, $this->attachment_ids_by_url ) ) {
+				$attachment_id = (int) attachment_url_to_postid( $candidate_url );
+				if ( 0 < $attachment_id && 'attachment' !== get_post_type( $attachment_id ) ) {
+					$attachment_id = 0;
+				}
+				$this->attachment_ids_by_url[ $candidate_url ] = $attachment_id;
+			}
+
+			if ( 0 < $this->attachment_ids_by_url[ $candidate_url ] ) {
+				return $this->attachment_ids_by_url[ $candidate_url ];
+			}
+		}
+
+		return 0;
 	}
 
 	/**

@@ -30,6 +30,13 @@ class EU_AI_Label_Settings {
 	const PAGE = 'eu-ai-label';
 
 	/**
+	 * WordPress.org review form for the plugin.
+	 *
+	 * @var string
+	 */
+	const REVIEW_URL = 'https://wordpress.org/support/plugin/eu-ai-label/reviews/#new-post';
+
+	/**
 	 * Default appearance options.
 	 *
 	 * @return array
@@ -58,6 +65,100 @@ class EU_AI_Label_Settings {
 		}
 
 		return wp_parse_args( $stored, self::get_defaults() );
+	}
+
+	/**
+	 * Retrieve the URL used by the review CTA.
+	 *
+	 * The WordPress.org form only fits the wp.org channel. The Woo Marketplace
+	 * edition is not listed there, so it gets no CTA unless
+	 * `eu_ai_label_review_url` supplies its marketplace URL.
+	 *
+	 * @return string Review-form URL, or an empty string to hide the CTA.
+	 */
+	public static function get_review_url() {
+		$url = ( defined( 'EU_AI_LABEL_DISTRIBUTION' ) && 'woocommerce' === EU_AI_LABEL_DISTRIBUTION )
+			? ''
+			: self::REVIEW_URL;
+
+		/**
+		 * Filter the destination of the settings-page review CTA.
+		 *
+		 * @param string $url Review-form URL. An empty string hides the CTA.
+		 */
+		return (string) apply_filters( 'eu_ai_label_review_url', $url );
+	}
+
+	/**
+	 * Retrieve the URL of the plans and pricing screen.
+	 *
+	 * Only a distribution that sells an upgrade supplies one — the Woo
+	 * Marketplace edition already ships every premium feature, and a Pro
+	 * install has nothing left to buy. Prices are never rendered here: the
+	 * seller's own screen reads them live, so they cannot drift.
+	 *
+	 * @return string Pricing-page URL, or an empty string when there is
+	 *                nothing to upgrade to.
+	 */
+	public static function get_pricing_url() {
+		/**
+		 * Filter the destination of the settings-page upgrade CTA.
+		 *
+		 * The active distribution bootstrap fills this in.
+		 *
+		 * @param string $url Pricing-page URL. An empty string hides the CTA.
+		 */
+		return (string) apply_filters( 'eu_ai_label_pricing_url', '' );
+	}
+
+	/**
+	 * Feature lists behind the plan comparison.
+	 *
+	 * @return array{free:array<int,string>,pro:array<int,string>}
+	 */
+	public static function get_plan_features() {
+		return array(
+			'free' => array(
+				__( 'Unlimited per-image labeling from the Media Library', 'eu-ai-label' ),
+				__( 'Always-visible badge that meets WCAG AA on any image', 'eu-ai-label' ),
+				__( 'Badge text localized in 7 languages', 'eu-ai-label' ),
+				__( 'Featured, gallery, in-content, WooCommerce, and Elementor images', 'eu-ai-label' ),
+			),
+			'pro'  => array(
+				__( 'Adaptive badge that adjusts to light or dark images', 'eu-ai-label' ),
+				__( 'Label Studio: badge colors, corner radius, and an optional icon', 'eu-ai-label' ),
+				__( 'Bulk labeling from the Media Library list and grid views', 'eu-ai-label' ),
+				__( '“How it was altered” details shown in a badge tooltip', 'eu-ai-label' ),
+				__( 'Tamper-evident audit log sealed with a hash chain', 'eu-ai-label' ),
+			),
+		);
+	}
+
+	/**
+	 * Retrieve the first-month-free promotion for eligible installations.
+	 *
+	 * `requires_opt_in` marks a URL that connects the account rather than
+	 * opening checkout, so the CTA can say so; `coupon` is the code to show
+	 * once checkout is reachable.
+	 *
+	 * @return array{url:string,requires_opt_in:bool,coupon:string}
+	 */
+	public static function get_promotion() {
+		$defaults = array(
+			'url'             => '',
+			'requires_opt_in' => false,
+			'coupon'          => '',
+		);
+
+		/**
+		 * Filter the first-month-free promotion state.
+		 *
+		 * The active distribution bootstrap fills this in; an empty URL
+		 * hides the CTA.
+		 *
+		 * @param array{url:string,requires_opt_in:bool,coupon:string} $promotion Promotion state.
+		 */
+		return wp_parse_args( (array) apply_filters( 'eu_ai_label_promotion', $defaults ), $defaults );
 	}
 
 	/**
@@ -223,6 +324,12 @@ class EU_AI_Label_Settings {
 		$is_pro         = class_exists( 'EU_AI_Label_License' ) && EU_AI_Label_License::is_pro();
 		$is_woocommerce = defined( 'EU_AI_LABEL_DISTRIBUTION' ) && 'woocommerce' === EU_AI_LABEL_DISTRIBUTION;
 		$counts         = self::get_status_counts();
+		$plan_features  = self::get_plan_features();
+		$pricing_url    = self::get_pricing_url();
+		$review_url     = self::get_review_url();
+		$promotion      = self::get_promotion();
+		$promotion_url  = (string) $promotion['url'];
+		$promo_count    = ( $promotion_url ? 1 : 0 ) + ( $review_url ? 1 : 0 );
 		?>
 			<p><?php echo esc_html__( 'Adds visible, localized AI transparency labels to your images, in the spirit of EU AI Act Article 50.', 'eu-ai-label' ); ?></p>
 
@@ -284,30 +391,88 @@ class EU_AI_Label_Settings {
 					</ol>
 				</div>
 
-				<div class="eu-ai-label-card">
+				<div class="eu-ai-label-card eu-ai-label-card--plan">
 					<h2><?php echo esc_html__( 'Plan', 'eu-ai-label' ); ?></h2>
-					<p>
-						<strong>
-							<?php
-							if ( $is_woocommerce ) {
-								echo esc_html__( 'Woo Marketplace — all premium features active', 'eu-ai-label' );
-							} else {
-								echo esc_html( $is_pro ? __( 'Pro — Label Studio and adaptive badge active', 'eu-ai-label' ) : __( 'Free', 'eu-ai-label' ) );
-							}
-							?>
-						</strong>
-					</p>
-					<p class="description">
-						<?php
-						if ( $is_woocommerce ) {
-							echo esc_html__( 'Your Woo Marketplace edition includes product-editor controls, Label Studio, adaptive badges, bulk labeling, alteration details, and the audit log.', 'eu-ai-label' );
-						} else {
-							echo esc_html__( 'The free plugin labels unlimited images with the always-visible, WCAG AA badge. Pro adds Label Studio, an adaptive badge, bulk labeling, alteration details with a badge tooltip, and a tamper-evident audit log.', 'eu-ai-label' );
-						}
-						?>
-					</p>
+					<div class="eu-ai-label-plans">
+						<div class="eu-ai-label-plan<?php echo $is_pro ? '' : ' eu-ai-label-plan--current'; ?>">
+							<h3>
+								<?php echo esc_html__( 'Free', 'eu-ai-label' ); ?>
+								<?php if ( ! $is_pro ) : ?>
+									<span class="eu-ai-label-plan__badge"><?php echo esc_html__( 'Current plan', 'eu-ai-label' ); ?></span>
+								<?php endif; ?>
+							</h3>
+							<p class="description"><?php echo esc_html__( 'A complete disclosure tool — nothing is locked or limited.', 'eu-ai-label' ); ?></p>
+							<ul class="eu-ai-label-plan__features">
+								<?php foreach ( $plan_features['free'] as $eu_ai_label_feature ) : ?>
+									<li><?php echo esc_html( $eu_ai_label_feature ); ?></li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+
+						<div class="eu-ai-label-plan<?php echo $is_pro ? ' eu-ai-label-plan--current' : ''; ?>">
+							<h3>
+								<?php echo esc_html( $is_woocommerce ? __( 'Woo Marketplace edition', 'eu-ai-label' ) : __( 'Pro', 'eu-ai-label' ) ); ?>
+								<?php if ( $is_pro ) : ?>
+									<span class="eu-ai-label-plan__badge"><?php echo esc_html__( 'Current plan', 'eu-ai-label' ); ?></span>
+								<?php endif; ?>
+							</h3>
+							<p class="description"><?php echo esc_html__( 'Everything in Free, plus:', 'eu-ai-label' ); ?></p>
+							<ul class="eu-ai-label-plan__features">
+								<?php foreach ( $plan_features['pro'] as $eu_ai_label_feature ) : ?>
+									<li><?php echo esc_html( $eu_ai_label_feature ); ?></li>
+								<?php endforeach; ?>
+								<?php if ( $is_woocommerce ) : ?>
+									<li><?php echo esc_html__( 'AI label controls in the WooCommerce product editor', 'eu-ai-label' ); ?></li>
+								<?php endif; ?>
+							</ul>
+							<?php if ( $pricing_url ) : ?>
+								<p class="eu-ai-label-plan__cta">
+									<a class="button button-primary" href="<?php echo esc_url( $pricing_url ); ?>">
+										<?php echo esc_html__( 'See plans and pricing', 'eu-ai-label' ); ?>
+									</a>
+								</p>
+							<?php endif; ?>
+						</div>
+					</div>
 				</div>
 			</div>
+
+			<?php if ( $promo_count > 0 ) : ?>
+			<div class="eu-ai-label-promotions<?php echo 1 === $promo_count ? ' eu-ai-label-promotions--single' : ''; ?>">
+				<?php if ( $promotion_url ) : ?>
+					<div class="eu-ai-label-promotion eu-ai-label-promotion--offer">
+						<span class="dashicons dashicons-awards" aria-hidden="true"></span>
+						<div class="eu-ai-label-promotion__content">
+							<h2><?php echo esc_html__( 'Get your first month of Pro free', 'eu-ai-label' ); ?></h2>
+							<?php if ( $promotion['requires_opt_in'] ) : ?>
+								<p><?php echo esc_html__( 'Opt in with your email first to unlock this offer.', 'eu-ai-label' ); ?></p>
+							<?php else : ?>
+								<p>
+									<?php echo esc_html__( 'Your coupon:', 'eu-ai-label' ); ?>
+									<code class="eu-ai-label-coupon"><?php echo esc_html( $promotion['coupon'] ); ?></code>
+								</p>
+							<?php endif; ?>
+						</div>
+						<a class="button button-primary" href="<?php echo esc_url( $promotion_url ); ?>">
+							<?php echo esc_html( $promotion['requires_opt_in'] ? __( 'Opt in to continue', 'eu-ai-label' ) : __( 'Apply coupon', 'eu-ai-label' ) ); ?>
+						</a>
+					</div>
+				<?php endif; ?>
+
+				<?php if ( $review_url ) : ?>
+					<div class="eu-ai-label-promotion eu-ai-label-promotion--review">
+						<span class="dashicons dashicons-star-filled" aria-hidden="true"></span>
+						<div class="eu-ai-label-promotion__content">
+							<h2><?php echo esc_html__( 'Enjoying EU AI Label?', 'eu-ai-label' ); ?></h2>
+							<p><?php echo esc_html__( 'A short review helps more WordPress users discover the plugin.', 'eu-ai-label' ); ?></p>
+						</div>
+						<a class="button button-secondary" href="<?php echo esc_url( $review_url ); ?>" target="_blank" rel="noopener noreferrer">
+							<?php echo esc_html__( 'Leave a review', 'eu-ai-label' ); ?>
+						</a>
+					</div>
+				<?php endif; ?>
+			</div>
+			<?php endif; ?>
 		<?php
 	}
 }

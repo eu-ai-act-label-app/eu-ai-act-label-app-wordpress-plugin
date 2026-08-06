@@ -48,7 +48,47 @@ class EU_AI_Label_Elementor {
 	 * @return string
 	 */
 	public function filter_widget_content( $content, $widget = null ) {
-		return $this->renderer->filter_content( $content );
+		$featured_image_id = $this->featured_image_id( $widget );
+
+		return $this->renderer->filter_content( $content, $featured_image_id );
+	}
+
+	/**
+	 * Resolve the current post thumbnail for featured-image widgets that render
+	 * a raw URL instead of calling wp_get_attachment_image().
+	 *
+	 * Keeping an explicit allow-list prevents a plain image widget from being
+	 * mislabeled with the current post's featured-image status. Sites can extend
+	 * the list for another compatible third-party featured-image widget.
+	 *
+	 * @param object|null $widget Elementor widget instance.
+	 * @return int Attachment ID, or zero when the fallback must not be used.
+	 */
+	private function featured_image_id( $widget ) {
+		if ( ! is_object( $widget ) || ! method_exists( $widget, 'get_name' ) ) {
+			return 0;
+		}
+
+		$widget_name = sanitize_key( (string) $widget->get_name() );
+		$widgets     = array(
+			'theme-post-featured-image',
+			'wpr-post-media',
+		);
+
+		/**
+		 * Filter Elementor widget names that render the current post thumbnail.
+		 *
+		 * @param string[] $widgets Known featured-image widget names.
+		 * @param object   $widget  Current Elementor widget instance.
+		 */
+		$widgets = (array) apply_filters( 'eu_ai_label_elementor_featured_image_widgets', $widgets, $widget );
+		$widgets = array_map( 'sanitize_key', $widgets );
+
+		if ( ! in_array( $widget_name, $widgets, true ) ) {
+			return 0;
+		}
+
+		return (int) get_post_thumbnail_id();
 	}
 
 	/**

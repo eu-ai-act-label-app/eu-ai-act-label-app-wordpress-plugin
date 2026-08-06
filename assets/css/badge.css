@@ -44,6 +44,16 @@
 	max-width: none;
 }
 
+/* Elementor Pro and Royal Elementor Addons can render a single-post featured
+   image as a raw <img> URL, without WordPress' attachment-image function. The
+   compatibility layer wraps that image after resolving the current post's
+   thumbnail ID; keep the wrapper full-width so the widget layout is unchanged. */
+.elementor-widget-theme-post-featured-image .eu-ai-label-wrap,
+.elementor-widget-wpr-post-media .eu-ai-label-wrap {
+	display: block;
+	width: 100%;
+}
+
 .eu-ai-label-badge {
 	position: absolute;
 	z-index: 2;

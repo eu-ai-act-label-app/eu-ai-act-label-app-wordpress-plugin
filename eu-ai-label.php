@@ -3,7 +3,7 @@
  * Plugin Name:       EU AI Label
  * Plugin URI:        https://euailabel.app/
  * Description:       Adds visible, localized AI labels to images in the Media Library, in the spirit of EU AI Act Article 50 transparency obligations.
- * Version:           0.5.0
+ * Version:           0.6.0
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            EU AI Label
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'EU_AI_LABEL_VERSION', '0.5.0' );
+define( 'EU_AI_LABEL_VERSION', '0.6.0' );
 define( 'EU_AI_LABEL_FILE', __FILE__ );
 define( 'EU_AI_LABEL_DIR', plugin_dir_path( __FILE__ ) );
 define( 'EU_AI_LABEL_URL', plugin_dir_url( __FILE__ ) );

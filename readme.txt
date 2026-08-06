@@ -4,13 +4,15 @@ Tags: ai, transparency, media-library, images, eu-ai-act
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.5.0
+Stable tag: 0.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Add visible, localized AI labels to your Media Library images, in the spirit of EU AI Act Article 50 transparency obligations.
 
 == Description ==
+
+**First month of Pro free:** opt in from the WordPress admin and use coupon `FIRSTMONTHFREE` at checkout.
 
 EU AI Label lets you flag images in your WordPress Media Library as AI generated or AI modified. Labeled images are wrapped on the front end with a clean badge overlay so visitors can see at a glance which visuals involved AI.
 
@@ -86,6 +88,17 @@ Plugin settings are removed on uninstall. Per-image labels stored in attachment 
 3. Pro Label Studio with color controls, border radius, icon choices, live preview, and WCAG contrast feedback.
 
 == Changelog ==
+
+= 0.6.0 =
+* Added: a plan overview under Settings → EU AI Label listing what the free plugin covers and what Pro adds, with a link to plans and pricing.
+* Added: a first-month-free Pro offer and a review link on the settings screen.
+* Fixed: the licensing bootstrap never ran, so Pro entitlement could stay unrecognized after a purchase and settings cleanup was skipped on uninstall.
+
+= 0.5.2 =
+* Fixed: AI labels now render on Media Library images inside Elementor post-content widgets when builders or optimization plugins omit the WordPress attachment class and retain only the image URL.
+
+= 0.5.1 =
+* Fixed: AI labels now render on single-post featured images produced by Royal Elementor Addons and Elementor Pro widgets that omit the WordPress attachment class.
 
 = 0.5.0 =
 * Added: Pro Label Studio with live preview, background/text colors, border radius, optional Sparkles/AI Pen/Robot icons, and a WCAG contrast warning.

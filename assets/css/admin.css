@@ -195,6 +195,81 @@
 	margin-bottom: 6px;
 }
 
+/* Plan comparison: free vs paid, spanning the full card grid. */
+.eu-ai-label-card--plan {
+	grid-column: 1 / -1;
+}
+
+.eu-ai-label-plans {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+}
+
+.eu-ai-label-plan {
+	box-sizing: border-box;
+	padding: 16px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #f6f7f7;
+}
+
+.eu-ai-label-plan--current {
+	border-color: #72aee6;
+	background: #f0f6fc;
+}
+
+.eu-ai-label-plan h3 {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+}
+
+.eu-ai-label-plan__badge {
+	padding: 1px 8px;
+	border-radius: 999px;
+	background: #2271b1;
+	color: #ffffff;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+}
+
+.eu-ai-label-plan .description {
+	margin: 6px 0 0;
+}
+
+.eu-ai-label-plan__features {
+	margin: 10px 0 0;
+	list-style: none;
+}
+
+.eu-ai-label-plan__features li {
+	position: relative;
+	margin-bottom: 6px;
+	padding-left: 22px;
+}
+
+.eu-ai-label-plan__features li::before {
+	position: absolute;
+	top: -1px;
+	left: 0;
+	color: #2271b1;
+	content: "\f147"; /* Dashicons "yes". */
+	font-family: dashicons;
+	font-size: 18px;
+	line-height: 1.4;
+}
+
+.eu-ai-label-plan__cta {
+	margin: 14px 0 0;
+}
+
 /* Badge preview: the real front-end pill over a light and a dark sample. */
 .eu-ai-label-preview {
 	display: flex;
@@ -268,6 +343,78 @@
 	font-size: 18px;
 	font-weight: 600;
 	color: #1d2327;
+}
+
+/* Settings-page review and first-month-free calls to action. */
+.eu-ai-label-promotions {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+	max-width: 960px;
+	margin-top: 16px;
+}
+
+.eu-ai-label-promotions--single {
+	grid-template-columns: 1fr;
+}
+
+.eu-ai-label-promotion {
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 14px;
+	box-sizing: border-box;
+	padding: 18px 20px;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	background: #ffffff;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.eu-ai-label-promotion--offer {
+	border-color: #72aee6;
+	background: #f0f6fc;
+}
+
+.eu-ai-label-promotion > .dashicons {
+	width: 28px;
+	height: 28px;
+	font-size: 28px;
+	color: #2271b1;
+}
+
+.eu-ai-label-promotion--review > .dashicons {
+	color: #dba617;
+}
+
+.eu-ai-label-promotion__content h2,
+.eu-ai-label-promotion__content p {
+	margin: 0;
+}
+
+.eu-ai-label-promotion__content h2 {
+	font-size: 14px;
+}
+
+.eu-ai-label-promotion__content p {
+	margin-top: 4px;
+	color: #50575e;
+}
+
+.eu-ai-label-coupon {
+	display: inline-block;
+	margin-left: 4px;
+	padding: 2px 7px;
+	border: 1px dashed #2271b1;
+	border-radius: 3px;
+	background: #ffffff;
+	color: #135e96;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+}
+
+.eu-ai-label-promotion .button {
+	white-space: nowrap;
 }
 
 /* ----- Pro Label Studio ----- */
@@ -458,6 +605,23 @@
 }
 
 @media screen and (max-width: 782px) {
+	.eu-ai-label-plans {
+		grid-template-columns: 1fr;
+	}
+
+	.eu-ai-label-promotions {
+		grid-template-columns: 1fr;
+	}
+
+	.eu-ai-label-promotion {
+		grid-template-columns: auto minmax(0, 1fr);
+	}
+
+	.eu-ai-label-promotion .button {
+		grid-column: 2;
+		justify-self: start;
+	}
+
 	.eu-ai-label-studio {
 		grid-template-columns: 1fr;
 	}
